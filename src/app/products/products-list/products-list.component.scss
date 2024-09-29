@@ -1,0 +1,61 @@
+$primary-color: #4CAF50;
+$border-color: #ccc;
+$background-color: #f9f9f9;
+$text-color: #333;
+$error-color: #e74c3c;
+ul {
+  list-style: none;
+  padding: 0;
+
+  li {
+    background-color: $background-color;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    padding: 10px;  // Menor padding
+    margin-bottom: 10px;  // Menor espaço entre os itens
+    font-size: 0.9rem;  // Diminuir o tamanho da fonte
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    h3 {
+      font-size: 1rem;  // Diminuir o tamanho do título
+      margin-bottom: 5px;
+      color: $primary-color;
+    }
+
+    p {
+      font-size: 0.85rem;  // Diminuir o tamanho da descrição
+      margin: 3px 0;
+
+      strong {
+        color: darken($primary-color, 15%);
+      }
+    }
+  }
+}
+
+// Estilo dos botões de paginação
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+
+  button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    margin: 0 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+
+    &.active {
+      background-color: darken($primary-color, 20%);
+    }
+  }
+}

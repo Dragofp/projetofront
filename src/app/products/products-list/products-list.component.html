@@ -1,14 +1,26 @@
 <div *ngIf="products.length > 0; else noProducts">
   <h2>Lista de Produtos</h2>
+
+  <!-- Exibe a lista de produtos paginada -->
   <ul>
-    <li *ngFor="let product of products">
+    <li *ngFor="let product of paginatedProducts">
       <h3>{{ product.name }}</h3>
       <p>{{ product.description }}</p>
-      <p><strong>Preço por Unidade: </strong>R${{ product.priceforlote/product.quantity }}</p>
+      <p><strong>Preço por Unidade: </strong>R${{ product.priceforlote / product.quantity }}</p>
       <p><strong>Preço por Lote: </strong>R${{ product.priceforlote }}</p>
       <p><strong>Quantidade por Lote: </strong>{{ product.quantity }}</p>
     </li>
   </ul>
+
+  <!-- Botões de Paginação -->
+  <div class="pagination">
+    <button
+      *ngFor="let page of [].constructor(totalPages()); let i = index"
+      [class.active]="i + 1 === currentPage"
+      (click)="changePage(i + 1)">
+      {{ i + 1 }}
+    </button>
+  </div>
 </div>
 
 <!-- Caso não haja produtos -->

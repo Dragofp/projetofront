@@ -1,0 +1,43 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Nome:</label>
+    <input id="name" formControlName="name" type="text" />
+  </div>
+
+  <div>
+    <label for="quantity">Quantidade:</label>
+    <input id="quantity" formControlName="quantity" type="number" />
+  </div>
+
+  <div>
+    <label for="numberlote">Número do Lote:</label>
+    <input id="numberlote" formControlName="numberlote" type="text" />
+  </div>
+
+  <div>
+    <label for="type">Tipo:</label>
+    <input id="type" formControlName="type" type="text" />
+  </div>
+
+  <div>
+    <label for="expiryDate">Data de Validade:</label>
+    <input id="expiryDate" formControlName="expiryDate" type="datetime-local" />
+  </div>
+
+  <div>
+    <label for="unitPrice">Preço Unitário:</label>
+    <input id="unitPrice" formControlName="unitPrice" type="number" step="0.01" />
+  </div>
+
+  <div>
+    <label for="priceforlote">Preço por Lote:</label>
+    <input id="priceforlote" formControlName="priceforlote" type="number" step="0.01" />
+  </div>
+
+  <div>
+    <label for="description">Descrição:</label>
+    <textarea id="description" formControlName="description"></textarea>
+  </div>
+
+  <button type="submit">Cadastrar Produto</button>
+</form>
