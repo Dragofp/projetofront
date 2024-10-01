@@ -32,6 +32,36 @@ ul {
     }
   }
 }
+.product-item {
+  position: relative;
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+
+  .delete-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+
+  &:hover .delete-button {
+    display: inline-block;  // Botão X aparece apenas no hover
+  }
+}
 
 // Estilo dos botões de paginação
 .pagination {

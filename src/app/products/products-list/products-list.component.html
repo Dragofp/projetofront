@@ -3,12 +3,16 @@
 
   <!-- Exibe a lista de produtos paginada -->
   <ul>
-    <li *ngFor="let product of paginatedProducts">
+    <li *ngFor="let product of paginatedProducts" class="product-item" (mouseenter)="showDeleteButton = true" (mouseleave)="showDeleteButton = false">
       <h3>{{ product.name }}</h3>
-      <p>{{ product.description }}</p>
+      <p>ID: {{ product.id }}</p>
+      <p>Descrição: {{ product.description }}</p>
       <p><strong>Preço por Unidade: </strong>R${{ product.priceforlote / product.quantity }}</p>
       <p><strong>Preço por Lote: </strong>R${{ product.priceforlote }}</p>
       <p><strong>Quantidade por Lote: </strong>{{ product.quantity }}</p>
+
+      <!-- Botão X para deletar -->
+      <button *ngIf="showDeleteButton" class="delete-button" (click)="confirmDelete(product.id)">X</button>
     </li>
   </ul>
 

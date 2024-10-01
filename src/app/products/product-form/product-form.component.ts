@@ -7,7 +7,7 @@ import { ProductService, Product } from '../productService'; // Certifique-se de
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],  // Adiciona CommonModule e ReactiveFormsModule aos imports
+  imports: [CommonModule, ReactiveFormsModule,HttpClientModule],  // Adiciona CommonModule e ReactiveFormsModule aos imports
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss']
 })

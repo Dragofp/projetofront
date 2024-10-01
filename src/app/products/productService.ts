@@ -34,6 +34,9 @@ export class ProductService {
   saveProduct(product: Product): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, product);
   }
+  deleteProduct(id: number): Observable<void>  {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`)
+  }
 
   // Emite o evento para informar que a lista de produtos foi atualizada
   refreshProductList(): void {
