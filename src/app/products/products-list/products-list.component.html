@@ -1,9 +1,30 @@
-<div *ngIf="products.length > 0; else noProducts">
-  <h2>Lista de Produtos</h2>
+<!-- Barra de Ferramentas Fixa com o Botão de Pesquisa -->
+<div class="toolbar">
+  <div class="toolbar-item">
+    <button class="toolbar-button" (click)="toggleSearch()">
+      🔍
+    </button>
+  </div>
+</div>
 
-  <!-- Exibe a lista de produtos paginada -->
+<!-- Barra de Pesquisa -->
+<div class="search-container" *ngIf="showSearchBar">
+  <form [formGroup]="searchForm" class="search-form">
+    <input
+      formControlName="searchTerm"
+      type="text"
+      placeholder="Pesquisar por nome, descrição, preço..."
+      class="search-input"
+    />
+  </form>
+</div>
+
+<!-- Lista de Produtos -->
+<div *ngIf="filteredProducts.length > 0; else noProducts">
+  <h2>Lista de Produtos</h2>
   <ul>
-    <li *ngFor="let product of paginatedProducts" class="product-item" (mouseenter)="showDeleteButton = true" (mouseleave)="showDeleteButton = false">
+    <li *ngFor="let product of paginatedProducts" class="product-item"
+        (mouseenter)="product.showActions = true" (mouseleave)="product.showActions = false">
       <h3>{{ product.name }}</h3>
       <p>ID: {{ product.id }}</p>
       <p>Descrição: {{ product.description }}</p>
@@ -11,8 +32,9 @@
       <p><strong>Preço por Lote: </strong>R${{ product.priceforlote }}</p>
       <p><strong>Quantidade por Lote: </strong>{{ product.quantity }}</p>
 
-      <!-- Botão X para deletar -->
-      <button *ngIf="showDeleteButton" class="delete-button" (click)="confirmDelete(product.id)">X</button>
+      <!-- Botões de Ação -->
+      <button *ngIf="product.showActions" class="delete-button" (click)="confirmDelete(product.id)">X</button>
+      <button *ngIf="product.showActions" class="edit-button" (click)="openEditDialog(product)">✏️</button>
     </li>
   </ul>
 

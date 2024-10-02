@@ -12,6 +12,7 @@ export interface Product {
   unitPrice: number;
   priceforlote: number;
   description: string;
+  showActions?: boolean;
 }
 
 @Injectable({
@@ -47,4 +48,9 @@ export class ProductService {
   onProductListUpdated(): Observable<void> {
     return this.productListUpdated.asObservable();
   }
+
+  updateProduct(updatedProduct: Product, productId: number): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${productId}`, updatedProduct);
+  }
+
 }

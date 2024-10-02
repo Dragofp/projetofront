@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Editar Produto</h2>
+<mat-dialog-content>
+  <form [formGroup]="productForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="description">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Preço por Lote</mat-label>
+      <input matInput type="number" formControlName="priceforlote">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Quantidade por Lote</mat-label>
+      <input matInput type="number" formControlName="quantity">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
+</mat-dialog-actions>

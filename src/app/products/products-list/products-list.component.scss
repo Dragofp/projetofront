@@ -1,8 +1,94 @@
+// Variáveis de Cores
 $primary-color: #4CAF50;
 $border-color: #ccc;
 $background-color: #f9f9f9;
 $text-color: #333;
 $error-color: #e74c3c;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// Tipografia
+$base-font-size: 0.9rem;
+$small-font-size: 0.85rem;
+$title-font-size: 1rem;
+$button-font-size: 0.9rem;
+
+// Container Geral
+.container {
+  margin-top: 80px;  // Para evitar sobreposição com a barra de ferramentas fixa
+  padding: 20px;
+}
+
+// Barra de Ferramentas Fixa
+.toolbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: $primary-color;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px $shadow-color;
+  z-index: 1000;
+
+  .toolbar-item {
+    display: flex;
+    align-items: center;
+
+    .toolbar-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      margin-right: 8px;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    span {
+      font-size: $base-font-size;
+    }
+  }
+}
+
+// Barra de Pesquisa
+.search-container {
+  margin-top: 60px;  // Espaço abaixo da barra de ferramentas
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  .search-form {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1px solid $border-color;
+    font-size: $base-font-size;
+    box-shadow: 0 2px 6px $shadow-color;
+    transition: all 0.3s ease;
+    background-color: $background-color;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+}
+
+// Lista de Produtos
 ul {
   list-style: none;
   padding: 0;
@@ -11,19 +97,19 @@ ul {
     background-color: $background-color;
     border: 1px solid $border-color;
     border-radius: 6px;
-    padding: 10px;  // Menor padding
-    margin-bottom: 10px;  // Menor espaço entre os itens
-    font-size: 0.9rem;  // Diminuir o tamanho da fonte
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: $base-font-size;
+    box-shadow: 0 1px 3px $shadow-color;
 
     h3 {
-      font-size: 1rem;  // Diminuir o tamanho do título
+      font-size: $title-font-size;
       margin-bottom: 5px;
       color: $primary-color;
     }
 
     p {
-      font-size: 0.85rem;  // Diminuir o tamanho da descrição
+      font-size: $small-font-size;
       margin: 3px 0;
 
       strong {
@@ -32,22 +118,26 @@ ul {
     }
   }
 }
+
 .product-item {
   position: relative;
   padding: 20px;
   margin: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  border-radius: 6px;
+  background-color: $background-color;
+  box-shadow: 0 1px 3px $shadow-color;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #f1f1f1;
+    background-color: lighten($background-color, 5%);
   }
 
-  .delete-button {
+  // Botão de Excluir
+  .delete-button,
+  .edit-button {
     position: absolute;
     top: 10px;
-    right: 10px;
     display: none;
     background-color: red;
     color: white;
@@ -58,12 +148,22 @@ ul {
     cursor: pointer;
   }
 
-  &:hover .delete-button {
-    display: inline-block;  // Botão X aparece apenas no hover
+  .edit-button {
+    background-color: $primary-color;
+    right: 45px;
+  }
+
+  .delete-button {
+    right: 10px;
+  }
+
+  &:hover .delete-button,
+  &:hover .edit-button {
+    display: inline-block;
   }
 }
 
-// Estilo dos botões de paginação
+// Estilo dos Botões de Paginação
 .pagination {
   display: flex;
   justify-content: center;
@@ -75,7 +175,7 @@ ul {
     border: none;
     margin: 0 5px;
     padding: 8px 12px;
-    font-size: 0.9rem;
+    font-size: $button-font-size;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -86,6 +186,44 @@ ul {
 
     &.active {
       background-color: darken($primary-color, 20%);
+    }
+  }
+}
+
+// Estilo para casos sem produtos
+.no-products {
+  text-align: center;
+  font-size: $base-font-size;
+  color: $text-color;
+  padding: 20px;
+}
+
+// Diálogo de Confirmação e Edição
+.dialog-container {
+  .mat-dialog-content {
+    padding: 20px;
+    font-size: $base-font-size;
+    background-color: $background-color;
+  }
+
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      padding: 8px 16px;
+      font-size: $button-font-size;
+      margin-left: 10px;
+    }
+
+    .cancel-button {
+      background-color: lighten($primary-color, 40%);
+      color: $text-color;
+    }
+
+    .confirm-button {
+      background-color: $primary-color;
+      color: white;
     }
   }
 }

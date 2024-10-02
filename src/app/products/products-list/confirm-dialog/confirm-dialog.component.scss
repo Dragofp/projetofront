@@ -46,3 +46,41 @@ button.mat-raised-button {
 button.mat-raised-button:hover {
   background-color: #c0392b;   // Cor de fundo ao passar o mouse no botão "Excluir"
 }
+.product-item {
+  position: relative;
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+
+  .delete-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+
+  .edit-button {
+    position: absolute;
+    top: 10px;
+    right: 50px;  // Posiciona à esquerda do botão de deletar
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+}
