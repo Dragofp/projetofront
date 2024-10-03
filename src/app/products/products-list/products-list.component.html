@@ -22,6 +22,17 @@
 <!-- Lista de Produtos -->
 <div *ngIf="filteredProducts.length > 0; else noProducts">
   <h2>Lista de Produtos</h2>
+
+  <!-- Seleção de Itens por Página -->
+  <div class="pagination-controls">
+    <label for="itemsPerPage">Itens por página:</label>
+    <select id="itemsPerPage" (change)="updateItemsPerPage($event)">
+      <option value="3">3</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+    </select>
+  </div>
+
   <ul>
     <li *ngFor="let product of paginatedProducts" class="product-item"
         (mouseenter)="product.showActions = true" (mouseleave)="product.showActions = false">
@@ -53,3 +64,13 @@
 <ng-template #noProducts>
   <p>Nenhum produto disponível no momento.</p>
 </ng-template>
+
+<!-- Mensagem de erro -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<!-- Mensagem de carregando -->
+<div *ngIf="loading" class="loading">
+  Carregando produtos...
+</div>
