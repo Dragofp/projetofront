@@ -4,7 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { ProductListComponent } from './products/products-list/products-list.component';  // Importa o ProductListComponent
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";  // Corrige a importação para MatDialogModule
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ToolbarComponent} from "./toolbar/toolbar.component";  // Corrige a importação para MatDialogModule
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,9 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";  /
     RouterOutlet,
     ProductListComponent,
     ProductFormComponent,
-    MatDialogModule,  // Importa o MatDialogModule para permitir diálogos
+    MatDialogModule,
+    ToolbarComponent,
+    // Importa o MatDialogModule para permitir diálogos
   ],
   providers:[BrowserAnimationsModule],
   templateUrl: './app.component.html',

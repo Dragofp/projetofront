@@ -5,14 +5,14 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditProductDialogComponent } from './edit-product-dialog/edit-product-dialog.component';
+import {ToolbarComponent} from "../../toolbar/toolbar.component";
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule]
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, ToolbarComponent]
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
@@ -24,6 +24,7 @@ export class ProductListComponent implements OnInit {
   showSearchBar: boolean = false;
   loading: boolean = false;
   errorMessage: string = '';
+
 
   constructor(
     private fb: FormBuilder,
@@ -50,6 +51,10 @@ export class ProductListComponent implements OnInit {
     this.searchForm.get('searchTerm')?.valueChanges.subscribe(searchTerm => {
       this.filterProducts(searchTerm);
     });
+  }
+
+  onToggleSearch(): void {
+    this.showSearchBar = !this.showSearchBar;
   }
 
   // Carregar produtos
@@ -156,5 +161,9 @@ export class ProductListComponent implements OnInit {
   // Alterna a barra de pesquisa
   toggleSearch(): void {
     this.showSearchBar = !this.showSearchBar;
+  }
+
+  openAddDialog() {
+
   }
 }

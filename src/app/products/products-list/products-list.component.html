@@ -1,14 +1,11 @@
-<!-- Barra de Ferramentas Fixa com o Botão de Pesquisa -->
-<div class="toolbar">
-  <div class="toolbar-item">
-    <button class="toolbar-button" (click)="toggleSearch()">
-      🔍
-    </button>
-  </div>
-</div>
+<!-- Barra de Ferramentas -->
+<app-toolbar
+  (toggleSearchEvent)="onToggleSearch()"
+  (openAddDialogEvent)="openAddDialog()">
+</app-toolbar>
 
 <!-- Barra de Pesquisa -->
-<div class="search-container" *ngIf="showSearchBar">
+<div *ngIf="showSearchBar" class="search-container">
   <form [formGroup]="searchForm" class="search-form">
     <input
       formControlName="searchTerm"
@@ -23,7 +20,7 @@
 <div *ngIf="filteredProducts.length > 0; else noProducts">
   <h2>Lista de Produtos</h2>
 
-  <!-- Seleção de Itens por Página -->
+  <!-- Controle de Itens por Página -->
   <div class="pagination-controls">
     <label for="itemsPerPage">Itens por página:</label>
     <select id="itemsPerPage" (change)="updateItemsPerPage($event)">
@@ -33,14 +30,15 @@
     </select>
   </div>
 
+  <!-- Exibição da Lista de Produtos -->
   <ul>
     <li *ngFor="let product of paginatedProducts" class="product-item"
         (mouseenter)="product.showActions = true" (mouseleave)="product.showActions = false">
       <h3>{{ product.name }}</h3>
       <p>ID: {{ product.id }}</p>
       <p>Descrição: {{ product.description }}</p>
-      <p><strong>Preço por Unidade: </strong>R${{ product.priceforlote / product.quantity }}</p>
-      <p><strong>Preço por Lote: </strong>R${{ product.priceforlote }}</p>
+      <p><strong>Preço por Unidade: </strong>R${{ (product.priceforlote / product.quantity) | number:'1.2-2' }}</p>
+      <p><strong>Preço por Lote: </strong>R${{ product.priceforlote | number:'1.2-2' }}</p>
       <p><strong>Quantidade por Lote: </strong>{{ product.quantity }}</p>
 
       <!-- Botões de Ação -->
@@ -65,12 +63,12 @@
   <p>Nenhum produto disponível no momento.</p>
 </ng-template>
 
-<!-- Mensagem de erro -->
+<!-- Mensagem de Erro -->
 <div *ngIf="errorMessage" class="error-message">
   {{ errorMessage }}
 </div>
 
-<!-- Mensagem de carregando -->
+<!-- Indicador de Carregamento -->
 <div *ngIf="loading" class="loading">
   Carregando produtos...
 </div>
