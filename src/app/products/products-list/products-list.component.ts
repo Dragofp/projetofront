@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService, Product } from '../productService';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditProductDialogComponent } from './edit-product-dialog/edit-product-dialog.component';
-import {ToolbarComponent} from "../../toolbar/toolbar.component";
-import {ProductFormComponent} from "../product-form/product-form.component";
+import { ToolbarComponent } from "../../toolbar/toolbar.component";
+import { ProductFormComponent } from "../product-form/product-form.component";
 
 @Component({
   selector: 'app-product-list',
@@ -26,6 +26,13 @@ export class ProductListComponent implements OnInit {
   loading: boolean = false;
   errorMessage: string = '';
 
+  displayFields = [
+    { key: 'id', label: 'ID', selected: true },
+    { key: 'description', label: 'Descrição', selected: true },
+    { key: 'type', label: 'Tipo', selected: false },
+    { key: 'priceforlote', label: 'Preço por Lote', selected: true },
+    { key: 'quantity', label: 'Quantidade por Lote', selected: true }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -43,14 +50,19 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  // Inicializa o formulário de pesquisa
+  // Inicializa o formulário de pesquisa com campo de seleção
   initializeForm(): void {
     this.searchForm = this.fb.group({
+      searchField: ['name' as keyof Product],   // Campo padrão para pesquisa
       searchTerm: ['', Validators.required]
     });
 
     this.searchForm.get('searchTerm')?.valueChanges.subscribe(searchTerm => {
-      this.filterProducts(searchTerm);
+      this.filterProducts(searchTerm, this.searchForm.get('searchField')?.value);
+    });
+
+    this.searchForm.get('searchField')?.valueChanges.subscribe(searchField => {
+      this.filterProducts(this.searchForm.get('searchTerm')?.value, searchField);
     });
   }
 
@@ -64,7 +76,7 @@ export class ProductListComponent implements OnInit {
     this.productService.getProducts().subscribe(
       (products: Product[]) => {
         this.products = products.map(product => ({ ...product, showActions: false }));
-        this.filterProducts(this.searchForm.get('searchTerm')?.value || '');
+        this.filterProducts(this.searchForm.get('searchTerm')?.value || '', this.searchForm.get('searchField')?.value);
         this.loading = false;
       },
       error => {
@@ -74,14 +86,13 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  // Filtra produtos com base no termo de pesquisa
-  filterProducts(searchTerm: string): void {
+  // Filtra produtos com base no termo e no campo selecionado
+  filterProducts(searchTerm: string, searchField: keyof Product): void {
     if (searchTerm) {
-      this.filteredProducts = this.products.filter(product =>
-        Object.values(product).some(value =>
-          value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
+      this.filteredProducts = this.products.filter(product => {
+        const fieldValue = product[searchField]?.toString().toLowerCase() || '';
+        return fieldValue.includes(searchTerm.toLowerCase());
+      });
     } else {
       this.filteredProducts = this.products;
     }
@@ -107,6 +118,18 @@ export class ProductListComponent implements OnInit {
     this.updatePaginatedProducts();
   }
 
+  // Alterna a visibilidade de um campo
+  toggleField(fieldKey: string): void {
+    const field = this.displayFields.find(f => f.key === fieldKey);
+    if (field) {
+      field.selected = !field.selected;
+    }
+  }
+
+  // Verifica se o campo está visível
+  isFieldVisible(fieldKey: keyof Product): boolean {
+    return !!this.displayFields.find(field => field.key === fieldKey && field.selected);
+  }
 
   // Confirmação de exclusão
   confirmDelete(productId: number): void {
@@ -159,13 +182,11 @@ export class ProductListComponent implements OnInit {
     return Math.ceil(this.filteredProducts.length / this.productsPerPage);
   }
 
-
+  // Abre o diálogo para adicionar novo produto
   openAddDialog(): void {
     const dialogRef = this.dialog.open(ProductFormComponent, {
       width: '800px',
       panelClass: 'custom-dialog-container'
     });
   }
-
-
 }

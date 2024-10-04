@@ -4,13 +4,36 @@
   (openAddDialogEvent)="openAddDialog()">
 </app-toolbar>
 
-<!-- Barra de Pesquisa -->
+
+<div class="field-selection">
+  <h3>Exibir Campos:</h3>
+  <div *ngFor="let field of displayFields">
+    <input
+      type="checkbox"
+      [checked]="field.selected"
+      (change)="toggleField(field.key)"
+    />
+    <label>{{ field.label }}</label>
+  </div>
+</div>
+
+
 <div *ngIf="showSearchBar" class="search-container">
   <form [formGroup]="searchForm" class="search-form">
+    <label for="searchField">Buscar por:</label>
+    <select id="searchField" formControlName="searchField" class="search-select">
+      <option value="name">Nome</option>
+      <option value="numberlote">Número do Lote</option>
+      <option value="type">Tipo</option>
+      <option value="expiryDate">Data de Validade</option>
+      <option value="unitPrice">Preço Unitário</option>
+      <option value="priceforlote">Preço por Lote</option>
+      <option value="description">Descrição</option>
+    </select>
     <input
       formControlName="searchTerm"
       type="text"
-      placeholder="Pesquisar por nome, descrição, preço..."
+      placeholder="Digite o termo de busca..."
       class="search-input"
     />
   </form>
@@ -20,26 +43,19 @@
 <div *ngIf="filteredProducts.length > 0; else noProducts">
   <h2>Lista de Produtos</h2>
 
-  <!-- Controle de Itens por Página -->
-  <div class="pagination-controls">
-    <label for="itemsPerPage">Itens por página:</label>
-    <select id="itemsPerPage" (change)="updateItemsPerPage($event)">
-      <option value="3">3</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-    </select>
-  </div>
-
-  <!-- Exibição da Lista de Produtos -->
   <ul>
     <li *ngFor="let product of paginatedProducts" class="product-item"
         (mouseenter)="product.showActions = true" (mouseleave)="product.showActions = false">
-      <h3>{{ product.name }}</h3>
-      <p>ID: {{ product.id }}</p>
-      <p>Descrição: {{ product.description }}</p>
-      <p><strong>Preço por Unidade: </strong>R${{ (product.priceforlote / product.quantity) | number:'1.2-2' }}</p>
-      <p><strong>Preço por Lote: </strong>R${{ product.priceforlote | number:'1.2-2' }}</p>
-      <p><strong>Quantidade por Lote: </strong>{{ product.quantity }}</p>
+      <h3><strong>{{ product.name }}</strong></h3>
+      <div *ngIf="isFieldVisible('id')">ID: {{ product.id }}</div>
+      <div *ngIf="isFieldVisible('description')">Descrição: {{ product.description }}</div>
+      <div *ngIf="isFieldVisible('type')">Tipo: {{ product.type }}</div>
+      <div *ngIf="isFieldVisible('priceforlote')">
+        <strong>Preço por Lote:</strong> R${{ product.priceforlote | number:'1.2-2' }}
+      </div>
+      <div *ngIf="isFieldVisible('quantity')">
+        <strong>Quantidade por Lote:</strong> {{ product.quantity }}
+      </div>
 
       <!-- Botões de Ação -->
       <button *ngIf="product.showActions" class="delete-button" (click)="confirmDelete(product.id)">X</button>
@@ -49,26 +65,14 @@
 
   <!-- Botões de Paginação -->
   <div class="pagination">
-    <button
-      *ngFor="let page of [].constructor(totalPages()); let i = index"
-      [class.active]="i + 1 === currentPage"
-      (click)="changePage(i + 1)">
+    <button *ngFor="let page of [].constructor(totalPages()); let i = index"
+            [class.active]="i + 1 === currentPage"
+            (click)="changePage(i + 1)">
       {{ i + 1 }}
     </button>
   </div>
 </div>
 
-<!-- Caso não haja produtos -->
 <ng-template #noProducts>
   <p>Nenhum produto disponível no momento.</p>
 </ng-template>
-
-<!-- Mensagem de Erro -->
-<div *ngIf="errorMessage" class="error-message">
-  {{ errorMessage }}
-</div>
-
-<!-- Indicador de Carregamento -->
-<div *ngIf="loading" class="loading">
-  Carregando produtos...
-</div>
