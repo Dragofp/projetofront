@@ -6,6 +6,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditProductDialogComponent } from './edit-product-dialog/edit-product-dialog.component';
 import {ToolbarComponent} from "../../toolbar/toolbar.component";
+import {ProductFormComponent} from "../product-form/product-form.component";
 
 @Component({
   selector: 'app-product-list',
@@ -163,7 +164,16 @@ export class ProductListComponent implements OnInit {
     this.showSearchBar = !this.showSearchBar;
   }
 
-  openAddDialog() {
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(ProductFormComponent, {
+      width: '400px'
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Atualiza a lista de produtos após o fechamento do diálogo
+        this.loadProducts();
+      }
+    });
   }
 }
