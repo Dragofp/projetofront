@@ -1,0 +1,37 @@
+/* Barra de Ferramentas */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  gap: 10px;
+
+  .toolbar-item {
+    display: flex;
+    align-items: center;
+
+    .toolbar-button {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
+      transition: color 0.2s, transform 0.2s;
+
+      &:hover {
+        color: #007bff;
+        transform: scale(1.1); /* Aumenta ligeiramente o botão ao passar o mouse */
+      }
+
+      &:active {
+        transform: scale(0.95); /* Feedback visual de clique */
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

@@ -1,163 +1,56 @@
-// Variáveis de cores
-$primary-color: #4CAF50;  // Cor primária
-$border-color: #ccc;  // Cor da borda
-$background-color: #ffffff;  // Cor de fundo do diálogo
-$text-color: #333;  // Cor do texto
-$error-color: #e74c3c;  // Cor de erro
-$shadow-color: rgba(0, 0, 0, 0.15);  // Cor da sombra
+.edit-product-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px 0;
 
-// Estilo do container de diálogo
-::ng-deep .mat-dialog-container {
-  background-color: $background-color;  // Cor de fundo
-  border-radius: 20px;  // Bordas arredondadas
-  padding: 30px;  // Mais espaçamento interno
-  box-shadow: 0 8px 20px $shadow-color;  // Sombra mais suave e forte
-  max-width: 450px;  // Largura máxima do diálogo
-  width: 100%;  // Preenche 100% até o máximo
-  transition: all 0.3s ease-in-out;  // Transição suave
-}
+  div {
+    margin-bottom: 15px;
 
-// Estilo do título do diálogo
-h2.mat-dialog-title {
-  font-size: 1.8rem;  // Tamanho maior do título
-  font-weight: 600;  // Negrito
-  margin-bottom: 20px;
-  color: $text-color;  // Cor do texto
-  text-align: center;  // Centraliza o título
-}
-
-// Estilo do conteúdo do diálogo
-mat-dialog-content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;  // Mais espaçamento entre os campos
-  margin-bottom: 25px;
-
-  mat-form-field {
-    width: 100%;  // Campos ocupam toda a largura
-
-    input {
-      font-size: 1.1rem;  // Tamanho da fonte dos inputs
-      padding: 12px 15px;  // Mais espaçamento interno
-      border-radius: 10px;  // Bordas arredondadas nos inputs
-      background-color: #f0f0f0;  // Fundo suave nos inputs
-      transition: background-color 0.3s ease;  // Transição suave
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+      font-size: 0.95rem;
     }
 
-    mat-label {
-      font-size: 1rem;  // Tamanho do label
-      color: darken($primary-color, 10%);
-    }
-  }
-}
+    input[type="text"],
+    input[type="number"],
+    input[type="datetime-local"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s, background-color 0.3s;
 
-// Estilo das ações do diálogo (botões)
-mat-dialog-actions {
-  display: flex;
-  justify-content: space-between;  // Distribui os botões no espaço
-  gap: 15px;  // Mais espaçamento entre os botões
-
-  button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 20px;  // Bordas bem arredondadas nos botões
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    &.mat-button {
-      color: #555;
-      background-color: transparent;
-      border: 1px solid $border-color;
-    }
-
-    &.mat-raised-button {
-      background-color: $primary-color;
-      color: white;
-
-      &:hover {
-        background-color: darken($primary-color, 10%);
+      &:focus {
+        border-color: #007bff;
+        background-color: #fff;
+        outline: none;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
       }
     }
-  }
-}
 
-// Estilo do botão ao passar o mouse
-button.mat-raised-button:hover {
-  background-color: darken($primary-color, 15%);
-}
-
-// Estilo dos campos de formulário com estado de erro
-mat-form-field.ng-invalid input {
-  border-color: $error-color;
-}
-
-mat-error {
-  font-size: 0.85rem;
-  color: $error-color;
-  margin-top: 5px;
-}
-// Estilos da barra de pesquisa
-.search-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.search-form {
-  width: 100%;
-  max-width: 500px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 12px 20px;
-  border-radius: 25px;  // Cantos arredondados
-  border: 1px solid #ddd;
-  font-size: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);  // Sombra suave
-  transition: all 0.3s ease;
-  background-color: #f9f9f9;
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;  // Cor primária no foco
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);  // Sombra mais forte ao focar
-  }
-
-  &::placeholder {
-    color: #aaa;
-  }
-}
-
-// Estilo dos itens de produto
-.product-item {
-  background-color: $background-color;
-  border: 1px solid $border-color;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  h3 {
-    color: $primary-color;
-    margin-bottom: 5px;
-  }
-
-  p {
-    font-size: 0.95rem;
-    margin: 5px 0;
-    color: $text-color;
-
-    strong {
-      color: darken($primary-color, 10%);
+    textarea {
+      resize: vertical;
+      min-height: 80px;
     }
   }
 }
 
-// Mensagem de "nenhum produto encontrado"
-ng-template {
-  text-align: center;
-  font-size: 1.2rem;
-  color: $error-color;
-  margin-top: 20px;
+/* Estilo para as ações do diálogo */
+.dialog-actions {
+  padding: 10px 0;
+
+  button {
+    margin-left: 10px;
+    font-weight: 600;
+  }
+
+  button:first-of-type {
+    margin-left: 0;
+  }
 }

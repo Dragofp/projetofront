@@ -1,0 +1,156 @@
+/* Barra de Ferramentas */
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+
+  .toolbar-item {
+    margin-right: 10px;
+
+    .toolbar-button {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
+
+      &:hover {
+        color: #007bff;
+      }
+    }
+  }
+}
+
+/* Barra de Pesquisa */
+.search-container {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+
+  .search-form {
+    width: 100%;
+    max-width: 400px;
+
+    .search-input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+    }
+  }
+}
+
+/* Lista de Produtos */
+.product-item {
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  margin: 10px 0;
+  list-style: none;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #fafafa;
+  }
+
+  h3 {
+    margin: 0;
+    color: #333;
+  }
+
+  p {
+    margin: 5px 0;
+    color: #555;
+  }
+
+  .delete-button,
+  .edit-button {
+    margin-right: 8px;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #333;
+
+    &:hover {
+      color: #ff4d4d;
+    }
+  }
+
+  .edit-button:hover {
+    color: #007bff;
+  }
+}
+
+/* Controle de Itens por Página */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+
+  label {
+    margin-right: 8px;
+  }
+
+  select {
+    padding: 5px;
+    font-size: 1rem;
+  }
+}
+
+/* Botões de Paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+
+  button {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #007bff;
+
+    &.active {
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 3px;
+    }
+
+    &:hover:not(.active) {
+      color: #0056b3;
+    }
+  }
+}
+
+/* Caso não haja produtos */
+.no-products {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+/* Mensagem de Erro */
+.error-message {
+  color: #d9534f;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Indicador de Carregamento */
+.loading {
+  text-align: center;
+  font-style: italic;
+  color: #007bff;
+  margin-top: 10px;
+}

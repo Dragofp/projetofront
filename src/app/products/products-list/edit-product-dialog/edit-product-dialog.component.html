@@ -1,29 +1,49 @@
 <h2 mat-dialog-title>Editar Produto</h2>
 <mat-dialog-content>
-  <form [formGroup]="productForm">
-    <mat-form-field appearance="fill">
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="name">
-    </mat-form-field>
+  <form [formGroup]="productForm" class="edit-product-form">
+    <div>
+      <label for="name">Nome:</label>
+      <input id="name" matInput formControlName="name" type="text" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Descrição</mat-label>
-      <input matInput formControlName="description">
-    </mat-form-field>
+    <div>
+      <label for="quantity">Quantidade:</label>
+      <input id="quantity" matInput formControlName="quantity" type="number" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Preço por Lote</mat-label>
-      <input matInput type="number" formControlName="priceforlote">
-    </mat-form-field>
+    <div>
+      <label for="numberlote">Número do Lote:</label>
+      <input id="numberlote" matInput formControlName="numberlote" type="text" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Quantidade por Lote</mat-label>
-      <input matInput type="number" formControlName="quantity">
-    </mat-form-field>
+    <div>
+      <label for="type">Tipo:</label>
+      <input id="type" matInput formControlName="type" type="text" />
+    </div>
+
+    <div>
+      <label for="expiryDate">Data de Validade:</label>
+      <input id="expiryDate" matInput formControlName="expiryDate" type="datetime-local" />
+    </div>
+
+    <div>
+      <label for="unitPrice">Preço Unitário:</label>
+      <input id="unitPrice" matInput formControlName="unitPrice" type="number" step="0.01" />
+    </div>
+
+    <div>
+      <label for="priceforlote">Preço por Lote:</label>
+      <input id="priceforlote" matInput formControlName="priceforlote" type="number" step="0.01" />
+    </div>
+
+    <div>
+      <label for="description">Descrição:</label>
+      <textarea id="description" matInput formControlName="description"></textarea>
+    </div>
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="dialog-actions">
   <button mat-button (click)="onCancel()">Cancelar</button>
   <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
 </mat-dialog-actions>

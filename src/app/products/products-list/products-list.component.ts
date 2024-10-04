@@ -159,21 +159,13 @@ export class ProductListComponent implements OnInit {
     return Math.ceil(this.filteredProducts.length / this.productsPerPage);
   }
 
-  // Alterna a barra de pesquisa
-  toggleSearch(): void {
-    this.showSearchBar = !this.showSearchBar;
-  }
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(ProductFormComponent, {
-      width: '400px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Atualiza a lista de produtos após o fechamento do diálogo
-        this.loadProducts();
-      }
+      width: '800px',
+      panelClass: 'custom-dialog-container'
     });
   }
+
+
 }
