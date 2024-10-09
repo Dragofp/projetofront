@@ -1,46 +1,78 @@
-.product-form {
+.product-form-container {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+  @media (min-width: 768px) {
+    padding: 20px 30px;
+    max-width: 500px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #333;
+    }
+  }
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
   .form-group {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
 
     label {
-      display: block;
       font-weight: 600;
-      margin-bottom: 6px;
-      color: #333;
-      font-size: 0.95rem;
+      color: #444;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
     }
 
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
+    input,
     textarea {
       width: 100%;
-      padding: 10px;
-      font-size: 1rem;
+      padding: 8px;
       border: 1px solid #ddd;
-      border-radius: 6px;
+      border-radius: 5px;
+      font-size: 0.9rem;
       background-color: #f9f9f9;
-      transition: border-color 0.3s, background-color 0.3s;
+      transition: border-color 0.3s ease;
 
       &:focus {
         border-color: #007bff;
         background-color: #fff;
-        outline: none;
-        box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
       }
-    }
 
-    input[readonly] {
-      background-color: #e9ecef;
-      color: #6c757d;
-      cursor: not-allowed;
+      &:hover {
+        border-color: #bbb;
+      }
     }
 
     textarea {
@@ -49,36 +81,65 @@
     }
   }
 
-  /* Estilo para os botões de submissão */
-  button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  .readonly-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
 
-    &:hover {
-      background-color: #0056b3;
-    }
-
-    &:disabled {
-      background-color: #ccc;
+    input[readonly] {
+      background-color: #e9ecef;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 8px;
+      font-size: 0.9rem;
+      color: #6c757d;
       cursor: not-allowed;
     }
   }
 
-  /* Espaçamento entre campos somente leitura */
-  .readonly-group {
-    margin-bottom: 15px;
+  .form-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
 
-    input[readonly] {
-      background-color: #f1f1f1;
-      color: #6c757d;
-      font-weight: bold;
+    button {
+      flex: 1;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
     }
   }
 }
+.custom-dialog-container {
+  .mat-dialog-container {
+    padding: 0; // Remove qualquer espaçamento interno que possa criar margens visuais.
+    background: transparent; // Torna o fundo do contêiner do diálogo transparente.
+    box-shadow: none; // Remove qualquer sombra que possa estar causando um efeito de borda.
+    border: none; // Garante que não haja borda no contêiner do modal.
+  }
+
+  .product-form-container {
+    background: #fff; // Define um fundo branco para o formulário em si.
+    border-radius: 12px; // Mantém o arredondamento das bordas.
+    box-shadow: none; // Remove qualquer sombra do contêiner do formulário.
+    border: none; // Garante que não haja borda no formulário.
+  }
+}
+
+

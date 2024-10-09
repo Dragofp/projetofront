@@ -42,7 +42,12 @@
 
 <!-- Seção de Exibição de Campos -->
 <div class="field-selection">
-  <h3>Exibir Campos:</h3>
+
+  <!-- Botão para marcar/desmarcar todos -->
+  <button (click)="toggleAllFields()" class="toggle-fields-button">
+    Marcar/Desmarcar Todos
+  </button>
+
   <div *ngFor="let field of displayFields">
     <input
       type="checkbox"
@@ -52,6 +57,7 @@
     <label>{{ field.label }}</label>
   </div>
 </div>
+
 
 <!-- Seção de Lista de Produtos -->
 <div *ngIf="filteredProducts.length > 0; else noProducts">

@@ -31,7 +31,6 @@ export class ProductListComponent implements OnInit {
   // Campos exibíveis na lista de produtos
   displayFields = [
     { key: 'productId', label: 'ID', selected: true },
-    { key: 'productName', label: 'Nome', selected: true },
     { key: 'description', label: 'Descrição', selected: true },
     { key: 'productType', label: 'Tipo', selected: true },
     { key: 'numberLote', label: 'Número do Lote', selected: true },
@@ -68,6 +67,14 @@ export class ProductListComponent implements OnInit {
     this.filters.push(newFilter);
     this.observeFilterChanges(newFilter);
   }
+  toggleAllFields(): void {
+    // Verifica se todos os campos estão selecionados
+    const allSelected = this.displayFields.every(field => field.selected);
+
+    // Se todos estiverem selecionados, desmarca todos; caso contrário, marca todos
+    this.displayFields.forEach(field => field.selected = !allSelected);
+  }
+
 
   observeFilterChanges(filter: { searchField: FormControl, searchTerm: FormControl }): void {
     filter.searchField.valueChanges.subscribe(() => this.applyFilters());
@@ -178,8 +185,27 @@ export class ProductListComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    const dialogRef = this.dialog.open(ProductFormComponent, { width: '800px', panelClass: 'custom-dialog-container' });
+    const dialogRef = this.dialog.open(ProductFormComponent, {
+      width: '95%',
+      maxWidth: '600px',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'custom-dialog-container' // Isso garante que os estilos personalizados sejam aplicados.
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadProducts();
+      }
+    });
   }
+
+
+
+
+
+
+
 
   // ========= Tratamento de Erros =========
   handleError(error: any): void {

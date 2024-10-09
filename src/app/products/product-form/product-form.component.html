@@ -1,59 +1,67 @@
-<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="productName">Nome:</label>
-    <input id="productName" formControlName="productName" type="text" />
-  </div>
+<div class="product-form-container">
+  <h2>Cadastro de Produto</h2>
+  <button class="close-button" (click)="onCancel()">X</button>
 
-  <div>
-    <label for="quantity">Quantidade:</label>
-    <input id="quantity" formControlName="quantity" type="number" />
-  </div>
+  <form [formGroup]="productForm" class="product-form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="productName">Nome:</label>
+      <input id="productName" formControlName="productName" type="text" />
+    </div>
 
-  <div>
-    <label for="numberLote">Número do Lote:</label>
-    <input id="numberLote" formControlName="numberLote" type="text" />
-  </div>
+    <div class="form-group">
+      <label for="quantity">Quantidade:</label>
+      <input id="quantity" formControlName="quantity" type="number" />
+    </div>
 
-  <div>
-    <label for="productType">Tipo:</label>
-    <input id="productType" formControlName="productType" type="text" />
-  </div>
+    <div class="form-group">
+      <label for="numberLote">Número do Lote:</label>
+      <input id="numberLote" formControlName="numberLote" type="text" />
+    </div>
 
-  <div>
-    <label for="dateExpiration">Data de Validade:</label>
-    <input id="dateExpiration" formControlName="dateExpiration" type="date" />
-  </div>
+    <div class="form-group">
+      <label for="productType">Tipo:</label>
+      <input id="productType" formControlName="productType" type="text" />
+    </div>
 
-  <div>
-    <label for="priceForLote">Preço por Lote:</label>
-    <input id="priceForLote" formControlName="priceForLote" type="number" step="0.01" />
-  </div>
+    <div class="form-group">
+      <label for="dateExpiration">Data de Validade:</label>
+      <input id="dateExpiration" formControlName="dateExpiration" type="date" />
+    </div>
 
-  <div>
-    <label for="gainPercentage">Porcentagem de Ganho:</label>
-    <input id="gainPercentage" formControlName="gainPercentage" type="number" step="0.01" />
-  </div>
+    <div class="form-group">
+      <label for="priceForLote">Preço por Lote:</label>
+      <input id="priceForLote" formControlName="priceForLote" type="number" step="0.01" />
+    </div>
 
-  <div>
-    <label for="description">Descrição:</label>
-    <textarea id="description" formControlName="description"></textarea>
-  </div>
+    <div class="form-group">
+      <label for="gainPercentage">Porcentagem de Ganho:</label>
+      <input id="gainPercentage" formControlName="gainPercentage" type="number" step="0.01" />
+    </div>
 
-  <!-- Campos de Visualização (somente leitura) -->
-  <div>
-    <label>Preço Unitário:</label>
-    <input [value]="priceForUnity | number:'1.2-2'" readonly />
-  </div>
+    <div class="form-group">
+      <label for="description">Descrição:</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
 
-  <div>
-    <label>Preço Total com Ganho:</label>
-    <input [value]="priceForLotePercent | number:'1.2-2'" readonly />
-  </div>
+    <!-- Campos de Visualização (somente leitura) -->
+    <div class="readonly-group">
+      <label>Preço Unitário:</label>
+      <input [value]="priceForUnity | number:'1.2-2'" readonly />
+    </div>
 
-  <div>
-    <label>Preço Unitário com Ganho:</label>
-    <input [value]="priceForUnityPercent | number:'1.2-2'" readonly />
-  </div>
+    <div class="readonly-group">
+      <label>Preço Total com Ganho:</label>
+      <input [value]="priceForLotePercent | number:'1.2-2'" readonly />
+    </div>
 
-  <button type="submit">Cadastrar Produto</button>
-</form>
+    <div class="readonly-group">
+      <label>Preço Unitário com Ganho:</label>
+      <input [value]="priceForUnityPercent | number:'1.2-2'" readonly />
+    </div>
+
+    <div class="form-buttons">
+      <button type="submit">Cadastrar Produto</button>
+      <button type="button" class="close-button" (click)="onCancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProductService, Product } from '../productService';
 import { MatDialogRef } from '@angular/material/dialog';
-import {DecimalPipe} from "@angular/common";
+import { DecimalPipe } from "@angular/common";
 
 @Component({
   selector: 'app-product-form',
@@ -13,8 +13,6 @@ import {DecimalPipe} from "@angular/common";
 })
 export class ProductFormComponent implements OnInit {
   productForm!: FormGroup;
-
-  // Campos de visualização
   priceForUnity = 0.0;
   priceForLotePercent = 0.0;
   priceForUnityPercent = 0.0;
@@ -37,24 +35,15 @@ export class ProductFormComponent implements OnInit {
       description: ['']
     });
 
-    // Observa mudanças nos campos para recalcular os valores
     this.productForm.valueChanges.subscribe(() => this.calculatePrices());
   }
 
-  // Recalcula os preços com base nos valores do formulário
   calculatePrices(): void {
-    const quantity = this.productForm.value.quantity;
-    const priceForLote = this.productForm.value.priceForLote;
-    const gainPercentage = this.productForm.value.gainPercentage;
+    const { quantity, priceForLote, gainPercentage } = this.productForm.value;
 
     if (quantity > 0 && priceForLote >= 0 && gainPercentage >= 0) {
-      // Calcula o preço por unidade
       this.priceForUnity = priceForLote / quantity;
-
-      // Calcula o preço total com ganho aplicado
       this.priceForLotePercent = priceForLote * (1 + gainPercentage / 100);
-
-      // Calcula o preço por unidade com ganho aplicado
       this.priceForUnityPercent = this.priceForLotePercent / quantity;
     }
   }
@@ -63,7 +52,7 @@ export class ProductFormComponent implements OnInit {
     if (this.productForm.valid) {
       const newProduct: Product = {
         ...this.productForm.value,
-        dateExpiration: this.productForm.value.dateExpiration,  // Certifique-se de que a data está no formato correto
+        dateExpiration: this.productForm.value.dateExpiration,
         status: 'ACTIVE'
       };
 
@@ -75,5 +64,9 @@ export class ProductFormComponent implements OnInit {
         error: (error) => console.error('Erro ao cadastrar produto!', error)
       });
     }
+  }
+
+  onCancel(): void {
+    this.dialogRef.close();
   }
 }

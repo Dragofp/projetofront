@@ -232,6 +232,60 @@
     transform: translateY(0);
   }
 }
+/* Campo de Seleção de Campos para Exibição */
+.field-selection {
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-right: 15px;
+    white-space: nowrap;
+  }
+
+  .toggle-fields-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    input[type="checkbox"] {
+      margin-right: 5px;
+      transform: scale(1.1); /* Aumenta um pouco o tamanho do checkbox para melhor usabilidade */
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: #555;
+      white-space: nowrap;
+    }
+  }
+}
+
 
 /* Mensagem para Nenhum Produto */
 .no-products {
