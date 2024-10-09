@@ -20,7 +20,7 @@ export class ProductListComponent implements OnInit {
   filteredProducts: Product[] = [];
   paginatedProducts: Product[] = [];
   currentPage: number = 1;
-  productsPerPage: number = 3;
+  productsPerPage: number = 6;
   showSearchBar: boolean = false;
   loading: boolean = false;
   errorMessage: string = '';

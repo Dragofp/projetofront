@@ -55,10 +55,10 @@
 
 <!-- Seção de Lista de Produtos -->
 <div *ngIf="filteredProducts.length > 0; else noProducts">
-  <h2>Lista de Produtos</h2>
+  <h2 class="titleproduct">Lista de Produtos</h2>
 
   <!-- Exibição de Produtos Paginados -->
-  <ul>
+  <ul class="product-list">
     <li *ngFor="let product of paginatedProducts" class="product-item"
         (mouseenter)="product.showActions = true" (mouseleave)="product.showActions = false">
 
@@ -90,9 +90,13 @@
       </div>
       <div *ngIf="isFieldVisible('description')">Descrição: {{ product.description }}</div>
 
-      <!-- Ações de Produto -->
-      <button *ngIf="product.showActions" class="delete-button" (click)="confirmDelete(product.productId)">X</button>
-      <button *ngIf="product.showActions" class="edit-button" (click)="openEditDialog(product)">✏️</button>
+      <!-- Ações de Produto alinhadas nos extremos -->
+      <div class="action-buttons" *ngIf="product.showActions">
+        <button class="delete-button" (click)="confirmDelete(product.productId)">X</button>
+        <button class="edit-button" (click)="openEditDialog(product)">✏️</button>
+      </div>
+
+
     </li>
   </ul>
 
