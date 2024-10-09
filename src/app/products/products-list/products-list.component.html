@@ -1,10 +1,46 @@
-<!-- Barra de Ferramentas -->
+<!-- Barra de Ferramentas com pesquisa e botão de adicionar produto -->
 <app-toolbar
   (toggleSearchEvent)="onToggleSearch()"
   (openAddDialogEvent)="openAddDialog()">
 </app-toolbar>
 
+<!-- Seção de Filtros Dinâmicos -->
+<div *ngIf="showSearchBar" class="search-container">
+  <h3>Filtros de Pesquisa</h3>
 
+  <!-- Filtro Dinâmico: Para cada filtro dinâmico adicionado -->
+  <div *ngFor="let filter of filters; let i = index" class="filter-group">
+    <!-- Selecionar o campo para buscar -->
+    <label for="searchField-{{i}}">Buscar por:</label>
+    <select [formControl]="filter.searchField" class="search-select">
+      <option value="productName">Nome</option>
+      <option value="numberLote">Número do Lote</option>
+      <option value="productType">Tipo</option>
+      <option value="dateExpiration">Data de Validade</option>
+      <option value="priceForUnity">Preço Unitário</option>
+      <option value="priceForUnityPercent">Preço Unitário com Ganho</option>
+      <option value="priceForLote">Preço por Lote</option>
+      <option value="priceForLotePercent">Preço por Lote com Ganho</option>
+      <option value="gainPercentage">Porcentagem de Ganho</option>
+      <option value="description">Descrição</option>
+    </select>
+
+    <input
+      [formControl]="filter.searchTerm"
+      type="text"
+      placeholder="Digite o termo de busca..."
+      class="search-input"
+    />
+
+    <!-- Botão de Remover Filtro -->
+    <button (click)="removeFilter(i)" class="remove-filter-button">X</button>
+  </div>
+
+  <!-- Botão para Adicionar Novo Filtro -->
+  <button (click)="addFilter()" class="add-filter-button">Adicionar Filtro</button>
+</div>
+
+<!-- Seção de Exibição de Campos -->
 <div class="field-selection">
   <h3>Exibir Campos:</h3>
   <div *ngFor="let field of displayFields">
@@ -17,53 +53,50 @@
   </div>
 </div>
 
-
-<div *ngIf="showSearchBar" class="search-container">
-  <form [formGroup]="searchForm" class="search-form">
-    <label for="searchField">Buscar por:</label>
-    <select id="searchField" formControlName="searchField" class="search-select">
-      <option value="name">Nome</option>
-      <option value="numberlote">Número do Lote</option>
-      <option value="type">Tipo</option>
-      <option value="expiryDate">Data de Validade</option>
-      <option value="unitPrice">Preço Unitário</option>
-      <option value="priceforlote">Preço por Lote</option>
-      <option value="description">Descrição</option>
-    </select>
-    <input
-      formControlName="searchTerm"
-      type="text"
-      placeholder="Digite o termo de busca..."
-      class="search-input"
-    />
-  </form>
-</div>
-
-<!-- Lista de Produtos -->
+<!-- Seção de Lista de Produtos -->
 <div *ngIf="filteredProducts.length > 0; else noProducts">
   <h2>Lista de Produtos</h2>
 
+  <!-- Exibição de Produtos Paginados -->
   <ul>
     <li *ngFor="let product of paginatedProducts" class="product-item"
         (mouseenter)="product.showActions = true" (mouseleave)="product.showActions = false">
-      <h3><strong>{{ product.name }}</strong></h3>
-      <div *ngIf="isFieldVisible('id')">ID: {{ product.id }}</div>
-      <div *ngIf="isFieldVisible('description')">Descrição: {{ product.description }}</div>
-      <div *ngIf="isFieldVisible('type')">Tipo: {{ product.type }}</div>
-      <div *ngIf="isFieldVisible('priceforlote')">
-        <strong>Preço por Lote:</strong> R${{ product.priceforlote | number:'1.2-2' }}
-      </div>
-      <div *ngIf="isFieldVisible('quantity')">
-        <strong>Quantidade por Lote:</strong> {{ product.quantity }}
-      </div>
 
-      <!-- Botões de Ação -->
-      <button *ngIf="product.showActions" class="delete-button" (click)="confirmDelete(product.id)">X</button>
+      <!-- Nome do Produto -->
+      <h3><strong>{{ product.productName }}</strong></h3>
+
+      <!-- Exibição de Campos Dinâmicos -->
+      <div *ngIf="isFieldVisible('productId')">ID: {{ product.productId }}</div>
+      <div *ngIf="isFieldVisible('quantity')">Quantidade: {{ product.quantity }}</div>
+      <div *ngIf="isFieldVisible('numberLote')">Número do Lote: {{ product.numberLote }}</div>
+      <div *ngIf="isFieldVisible('productType')">Tipo: {{ product.productType }}</div>
+      <div *ngIf="isFieldVisible('dateExpiration')">
+        Data de Validade: {{ product.dateExpiration | date:'dd/MM/yyyy' }}
+      </div>
+      <div *ngIf="isFieldVisible('priceForUnity')">
+        Preço Unitário: R${{ product.priceForUnity | number:'1.2-2' }}
+      </div>
+      <div *ngIf="isFieldVisible('priceForUnityPercent')">
+        Preço Unitário com Ganho: R${{ product.priceForUnityPercent | number:'1.2-2' }}
+      </div>
+      <div *ngIf="isFieldVisible('priceForLote')">
+        Preço por Lote: R${{ product.priceForLote | number:'1.2-2' }}
+      </div>
+      <div *ngIf="isFieldVisible('priceForLotePercent')">
+        Preço por Lote com Ganho: R${{ product.priceForLotePercent | number:'1.2-2' }}
+      </div>
+      <div *ngIf="isFieldVisible('gainPercentage')">
+        Porcentagem de Ganho: {{ product.gainPercentage }}%
+      </div>
+      <div *ngIf="isFieldVisible('description')">Descrição: {{ product.description }}</div>
+
+      <!-- Ações de Produto -->
+      <button *ngIf="product.showActions" class="delete-button" (click)="confirmDelete(product.productId)">X</button>
       <button *ngIf="product.showActions" class="edit-button" (click)="openEditDialog(product)">✏️</button>
     </li>
   </ul>
 
-  <!-- Botões de Paginação -->
+  <!-- Navegação de Paginação -->
   <div class="pagination">
     <button *ngFor="let page of [].constructor(totalPages()); let i = index"
             [class.active]="i + 1 === currentPage"
@@ -73,6 +106,7 @@
   </div>
 </div>
 
+<!-- Caso não haja produtos -->
 <ng-template #noProducts>
   <p>Nenhum produto disponível no momento.</p>
 </ng-template>

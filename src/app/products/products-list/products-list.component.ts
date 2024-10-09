@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService, Product } from '../productService';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
@@ -13,7 +13,7 @@ import { ProductFormComponent } from "../product-form/product-form.component";
   standalone: true,
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, ToolbarComponent]
+  imports: [CommonModule, MatDialogModule, ToolbarComponent, ReactiveFormsModule]
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
@@ -21,16 +21,26 @@ export class ProductListComponent implements OnInit {
   paginatedProducts: Product[] = [];
   currentPage: number = 1;
   productsPerPage: number = 3;
-  searchForm!: FormGroup;
   showSearchBar: boolean = false;
   loading: boolean = false;
   errorMessage: string = '';
 
+  // Filtros dinâmicos
+  filters: { searchField: FormControl; searchTerm: FormControl }[] = [];
+
+  // Campos exibíveis na lista de produtos
   displayFields = [
-    { key: 'id', label: 'ID', selected: true },
+    { key: 'productId', label: 'ID', selected: true },
+    { key: 'productName', label: 'Nome', selected: true },
     { key: 'description', label: 'Descrição', selected: true },
-    { key: 'type', label: 'Tipo', selected: false },
-    { key: 'priceforlote', label: 'Preço por Lote', selected: true },
+    { key: 'productType', label: 'Tipo', selected: true },
+    { key: 'numberLote', label: 'Número do Lote', selected: true },
+    { key: 'dateExpiration', label: 'Data de Validade', selected: true },
+    { key: 'priceForUnity', label: 'Preço Unitário', selected: true },
+    { key: 'priceForUnityPercent', label: 'Preço Unitário com Ganho', selected: true },
+    { key: 'priceForLote', label: 'Preço por Lote', selected: true },
+    { key: 'priceForLotePercent', label: 'Preço por Lote com Ganho', selected: true },
+    { key: 'gainPercentage', label: 'Porcentagem de Ganho', selected: true },
     { key: 'quantity', label: 'Quantidade por Lote', selected: true }
   ];
 
@@ -41,84 +51,86 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initializeForm();
     this.loadProducts();
+    this.addFilter();
 
-    // Escuta as atualizações de produtos
     this.productService.onProductListUpdated().subscribe(() => {
       this.loadProducts();
     });
   }
 
-  // Inicializa o formulário de pesquisa com campo de seleção
-  initializeForm(): void {
-    this.searchForm = this.fb.group({
-      searchField: ['name' as keyof Product],   // Campo padrão para pesquisa
-      searchTerm: ['', Validators.required]
-    });
-
-    this.searchForm.get('searchTerm')?.valueChanges.subscribe(searchTerm => {
-      this.filterProducts(searchTerm, this.searchForm.get('searchField')?.value);
-    });
-
-    this.searchForm.get('searchField')?.valueChanges.subscribe(searchField => {
-      this.filterProducts(this.searchForm.get('searchTerm')?.value, searchField);
-    });
+  // ========= Filtros Dinâmicos =========
+  addFilter(): void {
+    const newFilter = {
+      searchField: new FormControl('productName'),
+      searchTerm: new FormControl('')
+    };
+    this.filters.push(newFilter);
+    this.observeFilterChanges(newFilter);
   }
 
-  onToggleSearch(): void {
-    this.showSearchBar = !this.showSearchBar;
+  observeFilterChanges(filter: { searchField: FormControl, searchTerm: FormControl }): void {
+    filter.searchField.valueChanges.subscribe(() => this.applyFilters());
+    filter.searchTerm.valueChanges.subscribe(() => this.applyFilters());
   }
 
-  // Carregar produtos
+  removeFilter(index: number): void {
+    this.filters.splice(index, 1);
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    // Aplica os filtros na lista de produtos
+    this.filteredProducts = this.products.filter(product => {
+      return this.filters.every(filter => {
+        const searchField = filter.searchField.value as keyof Product;
+        const searchTerm = filter.searchTerm.value.toLowerCase();
+
+        // Obtem o valor do campo de pesquisa e converte para string, lidando com campos não definidos
+        const fieldValue = product[searchField]?.toString().toLowerCase() || '';
+
+        // Retorna true se o campo contém o termo de busca
+        return fieldValue.includes(searchTerm);
+      });
+    });
+
+    // Atualiza os produtos paginados com a nova lista filtrada
+    this.updatePaginatedProducts();
+  }
+
+  // ========= Manipulação de Produtos =========
   loadProducts(): void {
     this.loading = true;
     this.productService.getProducts().subscribe(
       (products: Product[]) => {
         this.products = products.map(product => ({ ...product, showActions: false }));
-        this.filterProducts(this.searchForm.get('searchTerm')?.value || '', this.searchForm.get('searchField')?.value);
+        this.applyFilters();
         this.loading = false;
       },
-      error => {
-        this.handleError(error);
-        this.loading = false;
-      }
+      error => this.handleError(error)
     );
   }
 
-  // Filtra produtos com base no termo e no campo selecionado
-  filterProducts(searchTerm: string, searchField: keyof Product): void {
-    if (searchTerm) {
-      this.filteredProducts = this.products.filter(product => {
-        const fieldValue = product[searchField]?.toString().toLowerCase() || '';
-        return fieldValue.includes(searchTerm.toLowerCase());
-      });
-    } else {
-      this.filteredProducts = this.products;
-    }
-    this.updatePaginatedProducts();
+  // ========= Paginação =========
+  onToggleSearch(): void {
+    this.showSearchBar = !this.showSearchBar;
   }
 
-  // Atualiza a lista de produtos paginados
   updatePaginatedProducts(): void {
     const startIndex = (this.currentPage - 1) * this.productsPerPage;
     this.paginatedProducts = this.filteredProducts.slice(startIndex, startIndex + this.productsPerPage);
   }
 
-  // Muda a página atual
   changePage(page: number): void {
     this.currentPage = page;
     this.updatePaginatedProducts();
   }
 
-  // Atualiza o número de itens por página
-  updateItemsPerPage(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.productsPerPage = +selectElement.value;
-    this.updatePaginatedProducts();
+  totalPages(): number {
+    return Math.ceil(this.filteredProducts.length / this.productsPerPage);
   }
 
-  // Alterna a visibilidade de um campo
+  // ========= Exibição de Campos Dinâmicos =========
   toggleField(fieldKey: string): void {
     const field = this.displayFields.find(f => f.key === fieldKey);
     if (field) {
@@ -126,31 +138,25 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  // Verifica se o campo está visível
   isFieldVisible(fieldKey: keyof Product): boolean {
     return !!this.displayFields.find(field => field.key === fieldKey && field.selected);
   }
 
-  // Confirmação de exclusão
+  // ========= Ações de Produto =========
   confirmDelete(productId: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.deleteProduct(productId);
     });
   }
 
-  // Exclui um produto
   deleteProduct(productId: number): void {
     this.productService.deleteProduct(productId).subscribe(
-      () => {
-        this.loadProducts();
-      },
+      () => this.loadProducts(),
       error => this.handleError(error)
     );
   }
 
-  // Abre o diálogo de edição
   openEditDialog(product: Product): void {
     const dialogRef = this.dialog.open(EditProductDialogComponent, {
       width: '400px',
@@ -158,35 +164,25 @@ export class ProductListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.updateProduct(result, product.id);
+      if (result) {
+        this.updateProduct(result, product.productId);
+      }
     });
   }
 
-  // Atualiza um produto
   updateProduct(updatedProduct: Product, productId: number): void {
     this.productService.updateProduct(updatedProduct, productId).subscribe(
-      () => {
-        this.loadProducts();
-      },
+      () => this.loadProducts(),
       error => this.handleError(error)
     );
   }
 
-  // Tratamento de erros
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(ProductFormComponent, { width: '800px', panelClass: 'custom-dialog-container' });
+  }
+
+  // ========= Tratamento de Erros =========
   handleError(error: any): void {
     this.errorMessage = `Erro: ${error.statusText || 'Erro desconhecido'}`;
-  }
-
-  // Calcula o número total de páginas
-  totalPages(): number {
-    return Math.ceil(this.filteredProducts.length / this.productsPerPage);
-  }
-
-  // Abre o diálogo para adicionar novo produto
-  openAddDialog(): void {
-    const dialogRef = this.dialog.open(ProductFormComponent, {
-      width: '800px',
-      panelClass: 'custom-dialog-container'
-    });
   }
 }

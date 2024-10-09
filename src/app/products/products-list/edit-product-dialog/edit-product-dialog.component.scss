@@ -1,27 +1,22 @@
 .edit-product-form {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px;
 
-  div {
+  h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  mat-form-field {
+    width: 100%;
     margin-bottom: 15px;
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #333;
-      font-size: 0.95rem;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="datetime-local"],
-    textarea {
-      width: 100%;
+    .mat-input-element {
       padding: 10px;
       font-size: 1rem;
-      border: 1px solid #ddd;
       border-radius: 6px;
       background-color: #f9f9f9;
       transition: border-color 0.3s, background-color 0.3s;
@@ -29,28 +24,53 @@
       &:focus {
         border-color: #007bff;
         background-color: #fff;
-        outline: none;
         box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
       }
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 80px;
+    mat-label {
+      color: #555;
+      font-weight: 500;
     }
+
+    input[readonly] {
+      background-color: #e9ecef;
+      color: #6c757d;
+      cursor: not-allowed;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
   }
 }
 
 /* Estilo para as ações do diálogo */
 .dialog-actions {
-  padding: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
 
   button {
     margin-left: 10px;
     font-weight: 600;
-  }
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.3s ease;
 
-  button:first-of-type {
-    margin-left: 0;
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &:first-of-type {
+      background-color: #6c757d;
+      color: #fff;
+      margin-left: 0;
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
   }
 }
