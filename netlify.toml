@@ -1,9 +1,8 @@
 [build]
-base = "gitfront"
 command = "npm run build:prod"
-publish = "dist/browser"
+publish = "dist/front"
 
-  [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
