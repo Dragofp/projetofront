@@ -1,0 +1,28 @@
+<div class="product-alter-container">
+  <h2>Alterar Quantidade</h2>
+  <form [formGroup]="alterForm" (ngSubmit)="onSave()" class="alter-form">
+    <div class="form-group">
+      <label for="changeQuantity">Alterar Quantidade:</label>
+      <input id="changeQuantity" formControlName="changeQuantity" type="number" />
+    </div>
+
+    <div class="adjust-buttons">
+      <button type="button" (click)="adjustQuantity(1)">+1</button>
+      <button type="button" (click)="adjustQuantity(10)">+10</button>
+      <button type="button" (click)="adjustQuantity(50)">+50</button>
+      <button type="button" (click)="adjustQuantity(-1)">-1</button>
+      <button type="button" (click)="adjustQuantity(-10)">-10</button>
+      <button type="button" (click)="adjustQuantity(-50)">-50</button>
+    </div>
+
+    <div class="form-group">
+      <label>Quantidade Final:</label>
+      <input [value]="finalQuantity" readonly />
+    </div>
+
+    <div class="form-buttons">
+      <button type="button" class="cancel-button" (click)="onCancel()">Cancelar</button>
+      <button type="submit" [disabled]="alterForm.invalid">Salvar</button>
+    </div>
+  </form>
+</div>

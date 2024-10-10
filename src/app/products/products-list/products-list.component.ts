@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService, Product } from '../productService';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditProductDialogComponent } from './edit-product-dialog/edit-product-dialog.component';
 import { ToolbarComponent } from "../../toolbar/toolbar.component";
 import { ProductFormComponent } from "../product-form/product-form.component";
+import {AlterProductComponent} from "./alterproduct/alterproduct.component";
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss'],
-  imports: [CommonModule, MatDialogModule, ToolbarComponent, ReactiveFormsModule]
+  imports: [CommonModule, MatDialogModule, ToolbarComponent, ReactiveFormsModule, FormsModule]
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
@@ -24,6 +25,8 @@ export class ProductListComponent implements OnInit {
   showSearchBar: boolean = false;
   loading: boolean = false;
   errorMessage: string = '';
+  sortCriteria: string = 'productName'; // Critério de ordenação padrão
+  sortDirection: string = 'asc'; // Direção padrão: 'asc' (ascendente)
 
   // Filtros dinâmicos
   filters: { searchField: FormControl; searchTerm: FormControl }[] = [];
@@ -105,6 +108,40 @@ export class ProductListComponent implements OnInit {
     this.updatePaginatedProducts();
   }
 
+  sortProducts(): void {
+    this.filteredProducts.sort((a: Product, b: Product) => {
+      const valueA = a[this.sortCriteria as keyof Product];
+      const valueB = b[this.sortCriteria as keyof Product];
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        return this.sortDirection === 'asc'
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+      }
+
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
+        return this.sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
+      }
+
+      if (valueA instanceof Date && valueB instanceof Date) {
+        return this.sortDirection === 'asc'
+          ? valueA.getTime() - valueB.getTime()
+          : valueB.getTime() - valueA.getTime();
+      }
+
+      return 0; // Caso os valores não sejam comparáveis diretamente
+    });
+
+    this.updatePaginatedProducts(); // Atualiza a lista paginada após a ordenação
+  }
+
+
+  toggleSortDirection(): void {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.sortProducts(); // Reordena os produtos após mudar a direção
+  }
+
+
   // ========= Manipulação de Produtos =========
   loadProducts(): void {
     this.loading = true;
@@ -164,9 +201,21 @@ export class ProductListComponent implements OnInit {
     );
   }
 
+
+
+  updateProduct(updatedProduct: Product, productId: number): void {
+    this.productService.updateProduct(updatedProduct, productId).subscribe(
+      () => this.loadProducts(),
+      error => this.handleError(error)
+    );
+  }
   openEditDialog(product: Product): void {
     const dialogRef = this.dialog.open(EditProductDialogComponent, {
-      width: '400px',
+      width: '95%', // Largura para telas pequenas
+      maxWidth: '650px', // Largura máxima para telas maiores
+      maxHeight: '100vh', // Limita a altura máxima do diálogo
+      autoFocus: false, // Evita o foco automático para melhor usabilidade
+      panelClass: 'custom-dialog-container', // Classe CSS para estilização
       data: product
     });
 
@@ -175,13 +224,6 @@ export class ProductListComponent implements OnInit {
         this.updateProduct(result, product.productId);
       }
     });
-  }
-
-  updateProduct(updatedProduct: Product, productId: number): void {
-    this.productService.updateProduct(updatedProduct, productId).subscribe(
-      () => this.loadProducts(),
-      error => this.handleError(error)
-    );
   }
 
   openAddDialog(): void {
@@ -199,16 +241,30 @@ export class ProductListComponent implements OnInit {
       }
     });
   }
+  openAlterDialog(product: Product): void {
+    const dialogRef = this.dialog.open(AlterProductComponent, {
+      width: '700px',
+      panelClass: 'custom-dialog-container',
+      data: product
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Cria um novo objeto sem a propriedade `showActions` antes de enviar ao backend
+        const { showActions, ...productData } = result;
 
-
-
-
-
+        this.productService.updateProduct(productData, product.productId).subscribe(() => {
+          this.loadProducts(); // Atualiza a lista de produtos após a alteração
+        });
+      }
+    });
+  }
 
 
   // ========= Tratamento de Erros =========
   handleError(error: any): void {
     this.errorMessage = `Erro: ${error.statusText || 'Erro desconhecido'}`;
   }
+
+
 }

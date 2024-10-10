@@ -1,65 +1,50 @@
-<h2 mat-dialog-title>Editar Produto</h2>
-<mat-dialog-content>
-  <form [formGroup]="productForm">
-    <mat-form-field appearance="fill">
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="productName">
-    </mat-form-field>
+<div class="product-form-container">
+  <h2>Editar Produto</h2>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Quantidade</mat-label>
-      <input matInput type="number" formControlName="quantity">
-    </mat-form-field>
+  <form [formGroup]="productForm" class="product-form">
+    <div class="form-group">
+      <label for="productName">Nome:</label>
+      <input id="productName" formControlName="productName">
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Número do Lote</mat-label>
-      <input matInput formControlName="numberLote">
-    </mat-form-field>
+    <div class="form-group">
+      <label for="quantity">Quantidade:</label>
+      <input id="quantity" type="number" formControlName="quantity">
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Tipo</mat-label>
-      <input matInput formControlName="productType">
-    </mat-form-field>
+    <div class="form-group">
+      <label for="numberLote">Número do Lote:</label>
+      <input id="numberLote" formControlName="numberLote">
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Data de Validade</mat-label>
-      <input matInput type="date" formControlName="dateExpiration">
-    </mat-form-field>
+    <div class="form-group">
+      <label for="productType">Tipo:</label>
+      <input id="productType" formControlName="productType">
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Preço por Lote</mat-label>
-      <input matInput type="number" formControlName="priceForLote" step="0.01">
-    </mat-form-field>
+    <div class="form-group">
+      <label for="dateExpiration">Data de Validade:</label>
+      <input id="dateExpiration" type="date" formControlName="dateExpiration">
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Porcentagem de Ganho</mat-label>
-      <input matInput type="number" formControlName="gainPercentage" step="0.01">
-    </mat-form-field>
+    <div class="form-group">
+      <label for="priceForLote">Preço por Lote:</label>
+      <input id="priceForLote" type="number" formControlName="priceForLote" step="0.01">
+    </div>
 
-    <!-- Campos Calculados (Somente Leitura) -->
-    <mat-form-field appearance="fill">
-      <mat-label>Preço Total com Ganho</mat-label>
-      <input matInput formControlName="priceForLotePercent" readonly>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="gainPercentage">Porcentagem de Ganho:</label>
+      <input id="gainPercentage" type="number" formControlName="gainPercentage" step="0.01">
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Preço Unitário</mat-label>
-      <input matInput formControlName="priceForUnity" readonly>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="description">Descrição:</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Preço Unitário com Ganho</mat-label>
-      <input matInput formControlName="priceForUnityPercent" readonly>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Descrição</mat-label>
-      <textarea matInput formControlName="description"></textarea>
-    </mat-form-field>
+    <div class="form-buttons">
+      <button mat-button class="close-button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
+    </div>
   </form>
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
-</mat-dialog-actions>
+</div>

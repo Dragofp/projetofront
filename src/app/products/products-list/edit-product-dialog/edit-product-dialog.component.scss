@@ -1,36 +1,82 @@
-.edit-product-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+.custom-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.product-form-container {
+  width: 100%;
+  max-width: 600px; /* Mantém a largura máxima */
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 90vh; /* Limita a altura para garantir que o modal não fique muito grande */
+  position: relative; /* Para o botão de fechar */
 
   h2 {
     text-align: center;
-    font-size: 1.5rem;
-    color: #333;
+    font-size: 1.6rem;
+    font-weight: bold;
     margin-bottom: 20px;
+    color: #333;
   }
 
-  mat-form-field {
-    width: 100%;
-    margin-bottom: 15px;
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s ease;
 
-    .mat-input-element {
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 6px;
-      background-color: #f9f9f9;
-      transition: border-color 0.3s, background-color 0.3s;
+    &:hover {
+      color: #333;
+    }
+  }
+}
 
-      &:focus {
-        border-color: #007bff;
-        background-color: #fff;
-        box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
-      }
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: 600;
+      color: #444;
+      font-size: 0.95rem;
+      margin-bottom: 5px;
     }
 
-    mat-label {
-      color: #555;
-      font-weight: 500;
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background-color: #f9f9f9;
+
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        background-color: #fff;
+        box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+      }
+
+      &:hover {
+        border-color: #bbb;
+      }
     }
 
     input[readonly] {
@@ -38,39 +84,84 @@
       color: #6c757d;
       cursor: not-allowed;
     }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px; /* Permite que a descrição seja maior, se necessário */
+    }
   }
 
-  textarea {
-    resize: vertical;
-    min-height: 80px;
+  /* Ajuste de layout para exibição de valores calculados */
+  .readonly-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    input {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 6px;
+      color: #6c757d;
+      font-weight: bold;
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    justify-content: space-between; /* Alinha os botões de ação */
+    gap: 10px;
+    margin-top: 20px; /* Maior espaçamento acima dos botões */
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px; /* Ajuste de padding para botões mais confortáveis */
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      &.close-button {
+        background-color: #f5f5f5;
+        color: #333;
+
+        &:hover {
+          background-color: #e9ecef;
+        }
+      }
+    }
   }
 }
 
-/* Estilo para as ações do diálogo */
-.dialog-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 10px;
+/* Responsividade */
+@media (max-width: 768px) {
+  .product-form-container {
+    padding: 15px;
+    max-width: 90vw; /* Ajusta a largura em telas menores */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
 
-  button {
-    margin-left: 10px;
-    font-weight: 600;
-    background-color: #007bff;
-    color: #fff;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-
-    &:first-of-type {
-      background-color: #6c757d;
-      color: #fff;
-      margin-left: 0;
-
-      &:hover {
-        background-color: #5a6268;
-      }
+  .form-buttons {
+    flex-direction: column; /* Coloca os botões um abaixo do outro em telas pequenas */
+    button {
+      width: 100%;
     }
   }
 }

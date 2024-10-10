@@ -10,6 +10,7 @@ export class ToolbarComponent {
   @Output() toggleSearchEvent = new EventEmitter<void>();
   @Output() openAddDialogEvent = new EventEmitter<void>();
 
+
   // Emite o evento para alternar a barra de pesquisa
   toggleSearch(): void {
     this.toggleSearchEvent.emit();
@@ -19,4 +20,6 @@ export class ToolbarComponent {
   openAddDialog(): void {
     this.openAddDialogEvent.emit();
   }
+
+
 }

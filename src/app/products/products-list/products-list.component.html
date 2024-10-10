@@ -39,6 +39,21 @@
   <!-- Botão para Adicionar Novo Filtro -->
   <button (click)="addFilter()" class="add-filter-button">Adicionar Filtro</button>
 </div>
+<div class="sort-container">
+  <label for="sortCriteria">Ordenar por:</label>
+  <select id="sortCriteria" [(ngModel)]="sortCriteria" (change)="sortProducts()">
+    <option value="productName">Nome</option>
+    <option value="dateExpiration">Data de Validade</option>
+    <option value="priceForUnity">Preço Unitário</option>
+    <option value="priceForUnityPercent">Preço Unitário com Ganho</option>
+    <option value="priceForLote">Preço por Lote</option>
+    <option value="priceForLotePercent">Preço por Lote com Ganho</option>
+  </select>
+
+  <button (click)="toggleSortDirection()" class="sort-direction-button">
+    {{ sortDirection === 'asc' ? '⬆️ Ascendente' : '⬇️ Descendente' }}
+  </button>
+</div>
 
 <!-- Seção de Exibição de Campos -->
 <div class="field-selection">
@@ -99,7 +114,9 @@
       <!-- Ações de Produto alinhadas nos extremos -->
       <div class="action-buttons" *ngIf="product.showActions">
         <button class="delete-button" (click)="confirmDelete(product.productId)">X</button>
+        <button class="edit-button" (click)="openAlterDialog(product)">🛠️</button>
         <button class="edit-button" (click)="openEditDialog(product)">✏️</button>
+
       </div>
 
 
