@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';  // Importamos o 'tap' para emitir o evento e o 'catchError' para tratamento de erros
+import { catchError, tap } from 'rxjs/operators';
 
 export interface Product {
   productId: number;
@@ -10,14 +10,14 @@ export interface Product {
   quantity: number;
   numberLote: string;
   description: string;
-  dateExpiration?: Date; // Adicionando `?` para permitir `undefined`
+  dateExpiration?: Date;
   gainPercentage: number;
   priceForLote: number;
   priceForLotePercent?: number;
   priceForUnity?: number;
   priceForUnityPercent?: number;
-  createdAt?: Date; // Adicionando `?` para permitir `undefined`
-  updatedAt?: Date; // Adicionando `?` para permitir `undefined`
+  createdAt?: Date;
+  updatedAt?: Date;
   status: 'ACTIVE' | 'SOLD' | 'ROTTEN';
   showActions?: boolean;
 }
@@ -26,7 +26,7 @@ export interface Product {
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:8080/products';
+  private apiUrl = 'https://app-long-surf-3i3.fly.dev/products'; // Atualize com a URL do seu backend
 
   // Subject para emitir eventos de atualização da lista de produtos
   private productListUpdated = new Subject<void>();
@@ -38,7 +38,6 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrl).pipe(
       tap((products) => {
         products.forEach(product => {
-          // Converte os campos de data somente se eles existirem
           product.dateExpiration = product.dateExpiration ? new Date(product.dateExpiration) : undefined;
           product.createdAt = product.createdAt ? new Date(product.createdAt) : undefined;
           product.updatedAt = product.updatedAt ? new Date(product.updatedAt) : undefined;
@@ -48,12 +47,10 @@ export class ProductService {
     );
   }
 
-
-
   // Método para salvar um novo produto
   saveProduct(product: Product): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, product).pipe(
-      tap(() => this.refreshProductList()),  // Emite o evento de atualização
+      tap(() => this.refreshProductList()),
       catchError(this.handleError)
     );
   }
@@ -61,7 +58,7 @@ export class ProductService {
   // Método para deletar um produto
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      tap(() => this.refreshProductList()),  // Emite o evento de atualização
+      tap(() => this.refreshProductList()),
       catchError(this.handleError)
     );
   }
@@ -69,7 +66,7 @@ export class ProductService {
   // Método para atualizar um produto
   updateProduct(updatedProduct: Product, productId: number): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${productId}`, updatedProduct).pipe(
-      tap(() => this.refreshProductList()),  // Emite o evento de atualização
+      tap(() => this.refreshProductList()),
       catchError(this.handleError)
     );
   }
@@ -88,10 +85,8 @@ export class ProductService {
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ocorreu um erro desconhecido!';
     if (error.error instanceof ErrorEvent) {
-      // Erro no lado do cliente
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      // Erro no lado do servidor
       errorMessage = `Código do erro: ${error.status}\nMensagem: ${error.message}`;
     }
     console.error(errorMessage);
