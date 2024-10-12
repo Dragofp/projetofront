@@ -26,7 +26,8 @@ export interface Product {
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'https://app-long-surf-313.fly.dev/products'; // Atualize com a URL do seu backend
+  //private apiUrl = 'https://app-long-surf-313.fly.dev/products'; // Atualize com a URL do seu backend
+  private apiUrl = 'http://localhost:8080/products'; // Atualize com a URL do seu backend
 
   // Subject para emitir eventos de atualização da lista de produtos
   private productListUpdated = new Subject<void>();
