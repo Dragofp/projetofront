@@ -1,0 +1,210 @@
+/* Contêiner do cabeçalho que inclui o botão e a barra de pesquisa */
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px; /* Espaço entre botão e barra de pesquisa */
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* Em telas menores, o botão e o campo de pesquisa ficam em linha vertical */
+    gap: 10px;
+  }
+}
+
+/* Botão de Voltar ao Index */
+.back-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Aumenta a sombra no hover */
+  }
+}
+
+/* Barra de pesquisa */
+.search-input {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex: 1;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+/* Campo de Seleção de Campos para Exibição */
+.field-selection {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-right: 15px;
+    white-space: nowrap;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    input[type="checkbox"] {
+      margin-right: 5px;
+      transform: scale(1.1); /* Aumenta o tamanho do checkbox */
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: #555;
+    }
+  }
+
+  .toggle-fields-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+/* Lista de Produtos com Validade */
+.validation-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.validation-item {
+  background-color: #fff;
+  padding: 20px;
+  border: 2px solid #ddd; /* Adiciona uma borda visível ao redor dos itens */
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  div {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #555;
+
+    strong {
+      color: #333;
+    }
+  }
+
+  .days-warning {
+    font-weight: bold;
+    color: #d9534f;
+  }
+
+  .safe {
+    color: #5cb85c;
+  }
+}
+
+
+
+/* Mensagem para Nenhum Produto */
+.no-products {
+  font-size: 1.1rem;
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+.pagination button {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #007bff;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

@@ -17,7 +17,7 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";  // Corrige a impo
     ProductFormComponent,
     MatDialogModule,
     ToolbarComponent,
-    // Importa o MatDialogModule para permitir diálogos
+
   ],
   providers:[BrowserAnimationsModule],
   templateUrl: './app.component.html',

@@ -1,0 +1,49 @@
+<div class="header-container">
+  <!-- Botão de Voltar ao Index -->
+  <a routerLink="/" class="back-button">
+    ⬅ Voltar para o Index
+  </a>
+
+  <!-- Barra de pesquisa -->
+  <input
+    type="text"
+    [formControl]="searchControl"
+    placeholder="Pesquisar produto..."
+    class="search-input"
+  />
+</div>
+
+<!-- Caixa de seleção para exibição dinâmica dos campos -->
+<div class="field-selection">
+  <h3>Exibir Campos</h3>
+  <div *ngFor="let field of displayFields">
+    <input
+      type="checkbox"
+      [checked]="field.selected"
+      (change)="toggleField(field.key)"
+    />
+    <label>{{ field.label }}</label>
+  </div>
+</div>
+
+<!-- Lista de produtos -->
+<div *ngIf="filteredProducts.length > 0; else noProducts">
+  <ul class="product-list">
+    <li *ngFor="let product of filteredProducts" class="product-item">
+      <div *ngIf="isFieldVisible('productName')">
+        <strong>Nome:</strong> {{ product.productName }}
+      </div>
+      <div *ngIf="isFieldVisible('dateExpiration')">
+        <strong>Validade:</strong> {{ product.dateExpiration | date:'dd/MM/yyyy' }}
+      </div>
+      <div *ngIf="isFieldVisible('daysUntilExpiration')">
+        <strong>Dias Restantes:</strong> {{ product.daysUntilExpiration }} dias
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Mensagem quando não há produtos -->
+<ng-template #noProducts>
+  <p>Nenhum produto encontrado.</p>
+</ng-template>

@@ -39,6 +39,8 @@
   <!-- Botão para Adicionar Novo Filtro -->
   <button (click)="addFilter()" class="add-filter-button">Adicionar Filtro</button>
 </div>
+
+<!-- Seção de Ordenação -->
 <div class="sort-container">
   <label for="sortCriteria">Ordenar por:</label>
   <select id="sortCriteria" [(ngModel)]="sortCriteria" (change)="sortProducts()">
@@ -72,7 +74,6 @@
     <label>{{ field.label }}</label>
   </div>
 </div>
-
 
 <!-- Seção de Lista de Produtos -->
 <div *ngIf="filteredProducts.length > 0; else noProducts">
@@ -111,14 +112,18 @@
       </div>
       <div *ngIf="isFieldVisible('description')">Descrição: {{ product.description }}</div>
 
-      <!-- Ações de Produto alinhadas nos extremos -->
+      <div *ngIf="product.promotion?.status === 'ACTIVE'">
+        <strong>Promoção:</strong>
+        {{ product.promotion?.promotionDescription || 'Sem promoção' }}
+        ({{ product.promotion?.discountPercentage }}% OFF)
+      </div>
+
+      <!-- Ações de Produto -->
       <div class="action-buttons" *ngIf="product.showActions">
         <button class="delete-button" (click)="confirmDelete(product.productId)">X</button>
         <button class="edit-button" (click)="openAlterDialog(product)">🛠️</button>
         <button class="edit-button" (click)="openEditDialog(product)">✏️</button>
-
       </div>
-
 
     </li>
   </ul>
