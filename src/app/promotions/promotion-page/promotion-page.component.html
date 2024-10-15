@@ -1,0 +1,33 @@
+<div class="product-management">
+  <h1>Gerenciamento de Produtos e Promoções</h1>
+
+  <!-- Botões para criar e organizar promoções -->
+  <div class="action-buttons">
+    <button (click)="openOrganizePromotionsDialog()">Organizar Promoções</button>
+  </div>
+
+  <!-- Lista de Produtos com Promoção -->
+  <div *ngIf="loading" class="loading-spinner">
+    Carregando...
+  </div>
+
+  <!-- Lista de Produtos com Promoção -->
+  <h2>Produtos com Promoção</h2>
+  <div *ngFor="let product of productsWithPromotion" class="product-card">
+    <h3>{{ product.productName }} ({{ product.productType }})</h3>
+    <p><strong>Promoção:</strong> {{ product.promotion?.promotionDescription }} ({{ product.promotion?.discountPercentage }}% OFF)</p>
+    <p><strong>Válido até:</strong> {{ product.promotion?.endDate | date: 'dd/MM/yyyy' }}</p>
+
+    <button (click)="removePromotion(product)" class="remove-promotion-btn">Remover Promoção</button>
+  </div>
+
+
+
+  <!-- Lista de Produtos sem Promoção -->
+  <h2>Produtos sem Promoção</h2>
+  <div *ngFor="let product of productsWithoutPromotion" class="product-card">
+    <h3>{{ product.productName }} ({{ product.productType }})</h3>
+    <p><strong>Quantidade:</strong> {{ product.quantity }}</p>
+    <p><strong>Descrição:</strong> {{ product.description }}</p>
+  </div>
+</div>

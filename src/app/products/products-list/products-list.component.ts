@@ -182,7 +182,7 @@ export class ProductListComponent implements OnInit {
   }
 
   updateProduct(updatedProduct: Product, productId: number): void {
-    this.productService.updateProduct(updatedProduct, productId).subscribe(
+    this.productService.updateProduct(updatedProduct,productId).subscribe(
       () => this.loadProducts(),
       error => this.handleError(error)
     );

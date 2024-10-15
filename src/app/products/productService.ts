@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
+
 export interface Promotion {
   promotionId: number;
   promotionDescription?: string;  // Renomeie de 'description' para 'promotionDescription'
@@ -32,7 +33,6 @@ export interface Product {
   promotion?: Promotion;
   showActions?: boolean;
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -83,13 +83,15 @@ export class ProductService {
     );
   }
 
-  // Função para atualizar um produto
   updateProduct(updatedProduct: Product, productId: number): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${productId}`, updatedProduct).pipe(
       tap(() => this.refreshProductList()),
       catchError(this.handleError)
     );
   }
+
+
+
 
   // Função para calcular os preços com base na porcentagem de ganho
   calculatePrices(product: Product): Product {
@@ -125,7 +127,6 @@ export class ProductService {
     return product;
   }
 
-
   // Função para aplicar promoções a uma lista de produtos
   applyPromotionsToProducts(products: Product[]): Product[] {
     return products.map(product => this.calculatePricesWithPromotion(product));
@@ -150,3 +151,4 @@ export class ProductService {
     return throwError(() => new Error(errorMessage));
   }
 }
+

@@ -5,12 +5,13 @@ import { catchError, tap } from 'rxjs/operators';
 
 export interface Promotion {
   promotionId: number;
+  promotionDescription: string; // Usando o campo correto da API
   discountPercentage: number;
-  description?: string;
   startDate?: Date;
   endDate?: Date;
-  status?: 'ACTIVE' | 'INACTIVE';  // Adicionando o campo status como opcional
+  status?: 'ACTIVE' | 'INACTIVE';
 }
+
 
 @Injectable({
   providedIn: 'root'
