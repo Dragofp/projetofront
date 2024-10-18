@@ -1,21 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ValidationErrors,
+  AbstractControl,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { ProductService, Product } from '../productService';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DecimalPipe } from "@angular/common";
+import {DecimalPipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
   templateUrl: './product-form.component.html',
-  styleUrls: ['./product-form.component.scss'],
-  imports: [ReactiveFormsModule, DecimalPipe]
+  imports: [
+    DecimalPipe,
+    NgIf,
+    ReactiveFormsModule
+  ],
+  styleUrls: ['./product-form.component.scss']
 })
 export class ProductFormComponent implements OnInit {
   productForm!: FormGroup;
   priceForUnity = 0.0;
   priceForLotePercent = 0.0;
   priceForUnityPercent = 0.0;
+  errorMessage: string = ''; // Mensagem de erro global
 
   constructor(
     private fb: FormBuilder,
@@ -24,18 +36,21 @@ export class ProductFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.buildForm();
+    this.productForm.valueChanges.subscribe(() => this.calculatePrices());
+  }
+
+  buildForm(): void {
     this.productForm = this.fb.group({
       productName: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
       numberLote: ['', Validators.required],
       productType: ['', Validators.required],
-      dateExpiration: ['', Validators.required],
+      dateExpiration: ['', [Validators.required, this.futureDateValidator]],
       priceForLote: [0.0, [Validators.required, Validators.min(0)]],
       gainPercentage: [0.0, [Validators.required, Validators.min(0)]],
-      description: ['']
+      description: ['', Validators.required]
     });
-
-    this.productForm.valueChanges.subscribe(() => this.calculatePrices());
   }
 
   calculatePrices(): void {
@@ -48,11 +63,27 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
+  futureDateValidator(control: AbstractControl): ValidationErrors | null {
+    const selectedDate = new Date(control.value);
+    const today = new Date();
+    if (selectedDate <= today) {
+      return { invalidDate: 'A data de validade deve ser uma data futura.' };
+    }
+    return null;
+  }
+
+  getErrorMessage(controlName: string): string | null {
+    const control = this.productForm.get(controlName);
+    if (control?.hasError('required')) return 'Este campo é obrigatório.';
+    if (control?.hasError('min')) return 'O valor deve ser maior que 0.';
+    if (control?.hasError('invalidDate')) return 'A data de validade deve ser uma data futura.';
+    return null;
+  }
+
   onSubmit(): void {
     if (this.productForm.valid) {
       const newProduct: Product = {
         ...this.productForm.value,
-        dateExpiration: this.productForm.value.dateExpiration,
         status: 'ACTIVE'
       };
 
@@ -61,8 +92,13 @@ export class ProductFormComponent implements OnInit {
           this.productService.refreshProductList();
           this.dialogRef.close(true);
         },
-        error: (error) => console.error('Erro ao cadastrar produto!', error)
+        error: (error) => {
+          console.error('Erro ao cadastrar produto!', error);
+          this.errorMessage = 'Erro ao cadastrar produto. Verifique os dados e tente novamente.';
+        }
       });
+    } else {
+      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios corretamente.';
     }
   }
 

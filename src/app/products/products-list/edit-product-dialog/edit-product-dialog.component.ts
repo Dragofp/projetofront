@@ -1,96 +1,66 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogActions, MatDialogContent } from '@angular/material/dialog';
+import { DecimalPipe, NgForOf, NgIf } from '@angular/common';
+import { Product, ProductService, Promotion } from '../../productService';
+import { PromotionService } from '../../../promotions/promotionService';
 
 @Component({
   selector: 'app-edit-product-dialog',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogContent
-  ],
   templateUrl: './edit-product-dialog.component.html',
-  styleUrls: ['./edit-product-dialog.component.scss']
+  imports: [DecimalPipe, ReactiveFormsModule, NgIf, NgForOf],
+  styleUrls: ['./edit-product-dialog.component.scss'],
 })
 export class EditProductDialogComponent implements OnInit {
   productForm!: FormGroup;
+  promotions: Promotion[] = [];
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<EditProductDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: Product,
+    private productService: ProductService,
+    private promotionService: PromotionService
   ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.loadPromotions();
+  }
+
+  initializeForm(): void {
     this.productForm = this.fb.group({
       productName: [this.data.productName, Validators.required],
+      productType: [this.data.productType],
       quantity: [this.data.quantity, [Validators.required, Validators.min(1)]],
       numberLote: [this.data.numberLote, Validators.required],
-      productType: [this.data.productType, Validators.required],
-      dateExpiration: [this.formatDateForInput(this.data.dateExpiration), Validators.required],
+      description: [this.data.description],
+      dateExpiration: [
+        this.formatDateForInput(this.data.dateExpiration),
+        Validators.required,
+      ],
       priceForLote: [this.data.priceForLote, [Validators.required, Validators.min(0)]],
       gainPercentage: [this.data.gainPercentage, [Validators.required, Validators.min(0)]],
-      priceForLotePercent: [{ value: 0, disabled: true }],  // Campo calculado, somente leitura
-      priceForUnity: [{ value: 0, disabled: true }],         // Campo calculado, somente leitura
-      priceForUnityPercent: [{ value: 0, disabled: true }],  // Campo calculado, somente leitura
-      description: [this.data.description]
+      status: [this.data.status, Validators.required],
+      promotion: [this.data.promotion?.promotionId || null], // Aceita promoção como null
     });
-
-    // Calcula os valores iniciais com base nos dados recebidos
-    this.calculatePrices();
-
-    // Configura os observadores para recalcular os preços conforme as mudanças
-    this.setupValueChanges();
   }
 
-  setupValueChanges(): void {
-    // Recalcula os valores quando 'priceForLote', 'gainPercentage' ou 'quantity' mudarem
-    this.productForm.get('priceForLote')?.valueChanges.subscribe(() => this.calculatePrices());
-    this.productForm.get('gainPercentage')?.valueChanges.subscribe(() => this.calculatePrices());
-    this.productForm.get('quantity')?.valueChanges.subscribe(() => this.calculatePrices());
-  }
-
-  calculatePrices(): void {
-    const quantity = this.productForm.get('quantity')?.value;
-    const priceForLote = this.productForm.get('priceForLote')?.value;
-    const gainPercentage = this.productForm.get('gainPercentage')?.value;
-
-    if (quantity > 0 && priceForLote >= 0) {
-      // Calcula o preço unitário
-      const priceForUnity = priceForLote / quantity;
-
-      // Calcula o preço total com ganho
-      const priceForLotePercent = priceForLote * (1 + gainPercentage / 100);
-
-      // Calcula o preço unitário com ganho
-      const priceForUnityPercent = priceForLotePercent / quantity;
-
-      // Atualiza os valores no formulário
-      this.productForm.patchValue({
-        priceForUnity: priceForUnity.toFixed(2),
-        priceForLotePercent: priceForLotePercent.toFixed(2),
-        priceForUnityPercent: priceForUnityPercent.toFixed(2)
-      }, { emitEvent: false });
-    }
-  }
-
-  formatDateForInput(date: string): string | null {
-    if (!date) return null;
-    const parsedDate = new Date(date);
-    const year = parsedDate.getFullYear();
-    const month = ('0' + (parsedDate.getMonth() + 1)).slice(-2);
-    const day = ('0' + parsedDate.getDate()).slice(-2);
-    return `${year}-${month}-${day}`;
+  loadPromotions(): void {
+    this.promotionService.getPromotions().subscribe({
+      next: (promotions) => (this.promotions = promotions),
+      error: (error) => {
+        console.error('Erro ao carregar promoções:', error);
+        this.errorMessage = 'Erro ao carregar promoções.';
+      },
+    });
   }
 
   onCancel(): void {
@@ -99,16 +69,31 @@ export class EditProductDialogComponent implements OnInit {
 
   onSave(): void {
     if (this.productForm.valid) {
-      const updatedProduct = {
+      const productId = this.data.productId;
+      const payload: Product = {
         ...this.productForm.value,
-        id: this.data.id,
-        dateExpiration: this.convertDateToBackendFormat(this.productForm.value.dateExpiration)
+        productId: productId,
+        promotion: this.productForm.value.promotion
+          ? { promotionId: this.productForm.value.promotion }
+          : null, // Envia null para remover a promoção
       };
-      this.dialogRef.close(updatedProduct);
+
+      this.productService.updateProduct(payload, productId).subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (error) => {
+          this.errorMessage = `Erro ao atualizar produto: ${error.message}`;
+          console.error('Erro de atualização:', error);
+        },
+      });
     }
   }
 
-  convertDateToBackendFormat(date: string): string {
-    return date;
+  formatDateForInput(date: string | Date | undefined): string {
+    if (!date) return '';
+    const parsedDate = new Date(date);
+    const year = parsedDate.getFullYear();
+    const month = ('0' + (parsedDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + parsedDate.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 }

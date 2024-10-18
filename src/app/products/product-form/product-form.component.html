@@ -3,47 +3,79 @@
   <button class="close-button" (click)="onCancel()">X</button>
 
   <form [formGroup]="productForm" class="product-form" (ngSubmit)="onSubmit()">
+    <!-- Nome -->
     <div class="form-group">
       <label for="productName">Nome:</label>
       <input id="productName" formControlName="productName" type="text" />
+      <div class="error-message" *ngIf="getErrorMessage('productName')">
+        {{ getErrorMessage('productName') }}
+      </div>
     </div>
 
+    <!-- Quantidade -->
     <div class="form-group">
       <label for="quantity">Quantidade:</label>
       <input id="quantity" formControlName="quantity" type="number" />
+      <div class="error-message" *ngIf="getErrorMessage('quantity')">
+        {{ getErrorMessage('quantity') }}
+      </div>
     </div>
 
+    <!-- Número do Lote -->
     <div class="form-group">
       <label for="numberLote">Número do Lote:</label>
       <input id="numberLote" formControlName="numberLote" type="text" />
+      <div class="error-message" *ngIf="getErrorMessage('numberLote')">
+        {{ getErrorMessage('numberLote') }}
+      </div>
     </div>
 
+    <!-- Tipo -->
     <div class="form-group">
       <label for="productType">Tipo:</label>
       <input id="productType" formControlName="productType" type="text" />
+      <div class="error-message" *ngIf="getErrorMessage('productType')">
+        {{ getErrorMessage('productType') }}
+      </div>
     </div>
 
+    <!-- Data de Validade -->
     <div class="form-group">
       <label for="dateExpiration">Data de Validade:</label>
       <input id="dateExpiration" formControlName="dateExpiration" type="date" />
+      <div class="error-message" *ngIf="getErrorMessage('dateExpiration')">
+        {{ getErrorMessage('dateExpiration') }}
+      </div>
     </div>
 
+    <!-- Preço por Lote -->
     <div class="form-group">
       <label for="priceForLote">Preço por Lote:</label>
       <input id="priceForLote" formControlName="priceForLote" type="number" step="0.01" />
+      <div class="error-message" *ngIf="getErrorMessage('priceForLote')">
+        {{ getErrorMessage('priceForLote') }}
+      </div>
     </div>
 
+    <!-- Porcentagem de Ganho -->
     <div class="form-group">
       <label for="gainPercentage">Porcentagem de Ganho:</label>
       <input id="gainPercentage" formControlName="gainPercentage" type="number" step="0.01" />
+      <div class="error-message" *ngIf="getErrorMessage('gainPercentage')">
+        {{ getErrorMessage('gainPercentage') }}
+      </div>
     </div>
 
+    <!-- Descrição -->
     <div class="form-group">
       <label for="description">Descrição:</label>
       <textarea id="description" formControlName="description"></textarea>
+      <div class="error-message" *ngIf="getErrorMessage('description')">
+        {{ getErrorMessage('description') }}
+      </div>
     </div>
 
-    <!-- Campos de Visualização (somente leitura) -->
+    <!-- Campos de Visualização (Somente Leitura) -->
     <div class="readonly-group">
       <label>Preço Unitário:</label>
       <input [value]="priceForUnity | number:'1.2-2'" readonly />
@@ -59,8 +91,14 @@
       <input [value]="priceForUnityPercent | number:'1.2-2'" readonly />
     </div>
 
+    <!-- Mensagem de Erro Global -->
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Botões -->
     <div class="form-buttons">
-      <button type="submit">Cadastrar Produto</button>
+      <button type="submit" [disabled]="productForm.invalid">Cadastrar Produto</button>
       <button type="button" class="close-button" (click)="onCancel()">Cancelar</button>
     </div>
   </form>

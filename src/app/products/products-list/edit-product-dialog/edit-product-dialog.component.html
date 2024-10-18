@@ -1,50 +1,80 @@
 <div class="product-form-container">
   <h2>Editar Produto</h2>
 
-  <form [formGroup]="productForm" class="product-form">
+  <form [formGroup]="productForm" class="product-form" (ngSubmit)="onSave()">
+    <!-- Nome -->
     <div class="form-group">
       <label for="productName">Nome:</label>
-      <input id="productName" formControlName="productName">
+      <input id="productName" formControlName="productName" type="text" />
     </div>
 
-    <div class="form-group">
-      <label for="quantity">Quantidade:</label>
-      <input id="quantity" type="number" formControlName="quantity">
-    </div>
-
-    <div class="form-group">
-      <label for="numberLote">Número do Lote:</label>
-      <input id="numberLote" formControlName="numberLote">
-    </div>
-
+    <!-- Tipo -->
     <div class="form-group">
       <label for="productType">Tipo:</label>
-      <input id="productType" formControlName="productType">
+      <input id="productType" formControlName="productType" type="text" />
     </div>
 
+    <!-- Quantidade -->
     <div class="form-group">
-      <label for="dateExpiration">Data de Validade:</label>
-      <input id="dateExpiration" type="date" formControlName="dateExpiration">
+      <label for="quantity">Quantidade:</label>
+      <input id="quantity" type="number" formControlName="quantity" />
     </div>
 
+    <!-- Número do Lote -->
     <div class="form-group">
-      <label for="priceForLote">Preço por Lote:</label>
-      <input id="priceForLote" type="number" formControlName="priceForLote" step="0.01">
+      <label for="numberLote">Número do Lote:</label>
+      <input id="numberLote" formControlName="numberLote" type="text" />
     </div>
 
-    <div class="form-group">
-      <label for="gainPercentage">Porcentagem de Ganho:</label>
-      <input id="gainPercentage" type="number" formControlName="gainPercentage" step="0.01">
-    </div>
-
+    <!-- Descrição -->
     <div class="form-group">
       <label for="description">Descrição:</label>
       <textarea id="description" formControlName="description"></textarea>
     </div>
 
+    <!-- Data de Validade -->
+    <div class="form-group">
+      <label for="dateExpiration">Data de Validade:</label>
+      <input id="dateExpiration" type="date" formControlName="dateExpiration" />
+    </div>
+
+    <!-- Preço por Lote -->
+    <div class="form-group">
+      <label for="priceForLote">Preço por Lote:</label>
+      <input id="priceForLote" type="number" formControlName="priceForLote" />
+    </div>
+
+    <!-- Porcentagem de Ganho -->
+    <div class="form-group">
+      <label for="gainPercentage">Porcentagem de Ganho:</label>
+      <input id="gainPercentage" type="number" formControlName="gainPercentage" />
+    </div>
+
+    <!-- Promoção -->
+    <div class="form-group">
+      <label for="promotion">Promoção:</label>
+      <select id="promotion" formControlName="promotion">
+        <option [ngValue]="null">Nenhuma</option>
+        <option *ngFor="let promo of promotions" [value]="promo.promotionId">
+          {{ promo.promotionDescription }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <select id="status" formControlName="status">
+        <option value="ACTIVE">Ativo</option>
+        <option value="SOLD">Vendido</option>
+        <option value="ROTTEN">Estragado</option>
+      </select>
+    </div>
+
+    <!-- Botões -->
     <div class="form-buttons">
-      <button mat-button class="close-button" (click)="onCancel()">Cancelar</button>
-      <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
+      <button type="button" (click)="onCancel()">Cancelar</button>
+      <button type="submit" [disabled]="productForm.invalid">Salvar</button>
     </div>
   </form>
 </div>
