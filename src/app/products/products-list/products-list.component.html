@@ -43,37 +43,61 @@
   </button>
 </div>
 
-<!-- Exibição de Campos -->
 <div class="field-selection">
   <button (click)="toggleAllFields()">Marcar/Desmarcar Todos</button>
+
   <div *ngFor="let field of displayFields">
-    <input type="checkbox" [checked]="field.selected" (change)="toggleField(field.key)" />
+    <input
+      type="checkbox"
+      [checked]="field.selected"
+      (change)="toggleField(field.key)"
+    />
     <label>{{ field.label }}</label>
   </div>
 </div>
-
-<!-- Lista de Produtos -->
 <div *ngIf="filteredProducts.length > 0; else noProducts">
   <ul class="product-list">
-    <li *ngFor="let product of paginatedProducts" class="product-item"
-        (mouseenter)="product.showActions = true" (mouseleave)="product.showActions = false">
-
+    <li *ngFor="let product of paginatedProducts" class="product-item">
       <h3><strong>{{ product.productName }}</strong></h3>
 
       <div *ngIf="isFieldVisible('productId')">ID: {{ product.productId }}</div>
       <div *ngIf="isFieldVisible('productName')">Nome: {{ product.productName }}</div>
       <div *ngIf="isFieldVisible('productType')">Tipo: {{ product.productType }}</div>
+      <div *ngIf="isFieldVisible('quantity')">Quantidade: {{product.quantity}}</div>
       <div *ngIf="isFieldVisible('numberLote')">Número do Lote: {{ product.numberLote }}</div>
+
       <div *ngIf="isFieldVisible('dateExpiration')">
         Data de Validade: {{ product.dateExpiration | date: 'dd/MM/yyyy' }}
       </div>
-      <div *ngIf="isFieldVisible('gainPercentage')">Porcentagem de Ganho: {{ product.gainPercentage }}%</div>
-      <div *ngIf="isFieldVisible('priceForLote')">Preço por Lote: R${{ product.priceForLote | number: '1.2-2' }}</div>
-      <div *ngIf="isFieldVisible('priceForLotePercent')">Preço por Lote com Percentual: {{ product.priceForLotePercent }}</div>
-      <div *ngIf="isFieldVisible('priceForUnity')">Preço Unitário: R${{ product.priceForUnity | number: '1.2-2' }}</div>
-      <div *ngIf="isFieldVisible('priceForUnityPercent')">Preço Unitário com Percentual: {{ product.priceForUnityPercent }}</div>
-      <div *ngIf="isFieldVisible('createdAt')">Criado em: {{ product.createdAt | date: 'dd/MM/yyyy HH:mm' }}</div>
-      <div *ngIf="isFieldVisible('updatedAt')">Atualizado em: {{ product.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</div>
+
+      <div *ngIf="isFieldVisible('gainPercentage')">
+        Porcentagem de Ganho: {{ product.gainPercentage }}%
+      </div>
+
+      <div *ngIf="isFieldVisible('priceForLote')">
+        Preço por Lote: R${{ product.priceForLote | number: '1.2-2' }}
+      </div>
+
+      <div *ngIf="isFieldVisible('priceForLotePercent')">
+        Preço por Lote com Percentual:  R${{ product.priceForLotePercent | number: '1.2-2' }}
+      </div>
+
+      <div *ngIf="isFieldVisible('priceForUnity')">
+        Preço Unitário: R${{ product.priceForUnity | number: '1.2-2' }}
+      </div>
+
+      <div *ngIf="isFieldVisible('priceForUnityPercent')">
+        Preço Unitário com Percentual:  R${{ product.priceForUnityPercent | number: '1.2-2' }}
+      </div>
+
+      <div *ngIf="isFieldVisible('createdAt')">
+        Criado em: {{ product.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+      </div>
+
+      <div *ngIf="isFieldVisible('updatedAt')">
+        Atualizado em: {{ product.updatedAt | date: 'dd/MM/yyyy HH:mm' }}
+      </div>
+
       <div *ngIf="isFieldVisible('status')">Status: {{ product.status }}</div>
 
       <div *ngIf="isFieldVisible('promotion') && product.promotion">
@@ -86,9 +110,10 @@
 
       <div *ngIf="isFieldVisible('description')">Descrição: {{ product.description }}</div>
 
-      <div class="action-buttons" *ngIf="product.showActions">
-        <button class="edit-button" (click)="openEditDialog(product)">✏️ Editar</button>
-        <button class="delete-button" (click)="confirmDelete(product.productId)">🗑️ Deletar</button>
+      <div class="action-buttons">
+        <button class="edit-button" (click)="openEditDialog(product)">✏️</button>
+        <button class="edit-button" (click)="openAlterDialog(product)">🔸</button>
+        <button class="delete-button" (click)="confirmDelete(product.productId)">🗑️</button>
       </div>
     </li>
   </ul>

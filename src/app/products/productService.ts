@@ -27,7 +27,7 @@ export interface Product {
   priceForUnityPercent?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  status: 'ACTIVE' | 'SOLD' | 'ROTTEN';
+  status: 'ACTIVE' | 'INACTIVE' | 'ROTTEN';
   promotion?: Promotion;
   showActions?: boolean;
 }

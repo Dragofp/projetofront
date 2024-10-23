@@ -155,18 +155,28 @@ export class ProductListComponent implements OnInit {
   toggleAllFields(): void {
     const allSelected = this.displayFields.every((field) => field.selected);
     this.displayFields.forEach((field) => (field.selected = !allSelected));
+    this.applyFilters(); // Certifique-se de atualizar a exibição após a alteração
   }
 
-  // Alterna a visibilidade de um campo específico
+// Alterna a visibilidade de um campo específico
   toggleField(key: string): void {
     const field = this.displayFields.find((f) => f.key === key);
     if (field) field.selected = !field.selected;
+    this.applyFilters(); // Atualiza a lista após a alteração
   }
 
-  // Verifica se um campo está visível
+// Verifica se um campo está visível
   isFieldVisible(key: string): boolean {
     return this.displayFields.some((field) => field.key === key && field.selected);
   }
+
+  openAlterDialog(product: Product):void{
+    const dialogref = this.dialog.open(AlterProductComponent,{data:product,width:'600px'});
+    dialogref.afterClosed().subscribe((result) =>{
+      if (result) this.loadProducts();
+    })
+  }
+
 
   // Abre o diálogo de edição de produto
   openEditDialog(product: Product): void {

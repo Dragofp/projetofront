@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Product } from "../../productService";
+import {Product, ProductService} from "../../productService";
+
 
 @Component({
   selector: 'app-alterproduct',
@@ -16,10 +17,12 @@ export class AlterProductComponent implements OnInit {
   alterForm!: FormGroup;
   initialQuantity: number = 0;
   finalQuantity: number = 0;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AlterProductComponent>,
+    private productservice: ProductService,
     @Inject(MAT_DIALOG_DATA) public data: Product
   ) {
     this.initialQuantity = data.quantity;
@@ -50,10 +53,13 @@ export class AlterProductComponent implements OnInit {
 
   onSave(): void {
     if (this.finalQuantity > 0) {
-      const updatedProduct = { ...this.data, quantity: this.finalQuantity };
-      this.dialogRef.close(updatedProduct);
-    }
-  }
+      const result = { ...this.data, quantity: this.finalQuantity};
+      const resultid = this.data.productId;
+      this.productservice.updateProduct(result,resultid).subscribe({next: () => this.dialogRef.close(result),
+        error: (error) => {
+        this.errorMessage = `Erro ao atualizar produto: ${error.message}`;
+        console.error('Erro de atualização:', error);
+      }})}};
 
   onCancel(): void {
     this.dialogRef.close();

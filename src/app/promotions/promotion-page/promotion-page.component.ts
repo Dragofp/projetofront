@@ -5,12 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'; // Para o diálogo
 import { Product, ProductService } from "../../products/productService";
 import { Promotion, PromotionService } from "../promotionService";
-import { OrganizePromotionsDialogComponent } from './organize-promotions/organize-promotions.component'; // O diálogo de organização de promoções
+import { OrganizePromotionsDialogComponent } from './organize-promotions/organize-promotions.component';
+import {RouterLink} from "@angular/router"; // O diálogo de organização de promoções
 
 @Component({
   selector: 'app-promotion-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, MatDialogModule],
+    imports: [CommonModule, FormsModule, HttpClientModule, MatDialogModule, RouterLink],
   templateUrl: './promotion-page.component.html',
   styleUrls: ['./promotion-page.component.scss']
 })
