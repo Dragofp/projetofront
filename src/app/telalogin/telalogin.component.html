@@ -1,0 +1,38 @@
+<div class="login-container">
+  <h2>{{ isLoginMode ? 'Login' : 'Registro' }}</h2>
+
+  <!-- Mensagem de erro -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Formulário de Login -->
+  <form *ngIf="isLoginMode" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+    <label for="email">Email:</label>
+    <input id="email" formControlName="email" type="email" required />
+
+    <label for="senha">Senha:</label>
+    <input id="senha" formControlName="senha" type="password" required />
+
+    <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+  </form>
+
+  <!-- Formulário de Registro -->
+  <form *ngIf="!isLoginMode" [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+    <label for="name">Nome:</label>
+    <input id="name" formControlName="name" type="text" required />
+
+    <label for="email">Email:</label>
+    <input id="1email" formControlName="email" type="email" required />
+
+    <label for="senha">Senha:</label>
+    <input id="1senha" formControlName="senha" type="password" required />
+
+    <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
+  </form>
+
+  <!-- Botão para alternar entre Login e Registro -->
+  <button (click)="toggleMode()">
+    {{ isLoginMode ? 'Criar uma conta' : 'Já tem uma conta? Faça login' }}
+  </button>
+</div>

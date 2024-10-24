@@ -86,10 +86,18 @@ export class OrganizePromotionsDialogComponent implements OnInit {
 
   // Função para criar uma nova promoção
   createPromotion(): void {
+    const today = new Date();
+    const startDate = this.newPromotion.startDate ? new Date(this.newPromotion.startDate) : null;
+
+    if (!startDate || startDate < today) {
+      alert('A data de início deve ser no presente ou no futuro.');
+      return;
+    }
+
     this.promotionService.savePromotion(this.newPromotion).subscribe((createdPromotion) => {
       this.promotions.push(createdPromotion);  // Atualiza a lista de promoções
-      this.selectedPromotion = createdPromotion;    // Seleciona a nova promoção automaticamente
-      this.newPromotion = {                         // Limpa o formulário de criação
+      this.selectedPromotion = createdPromotion; // Seleciona a nova promoção automaticamente
+      this.newPromotion = {                       // Limpa o formulário de criação
         promotionId: 0,
         promotionDescription: '',
         discountPercentage: 0,
@@ -97,7 +105,7 @@ export class OrganizePromotionsDialogComponent implements OnInit {
         endDate: undefined,
         status: 'ACTIVE'
       };
-      this.showCreatePromotionForm = false;         // Fecha o formulário de criação
+      this.showCreatePromotionForm = false;       // Fecha o formulário de criação
     });
   }
 

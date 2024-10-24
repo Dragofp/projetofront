@@ -13,10 +13,8 @@
   {{ showCreatePromotionForm ? 'Fechar Formulário de Nova Promoção' : 'Criar Nova Promoção' }}
 </button>
 
-<!-- Formulário de criação de promoção (exibido condicionalmente) -->
 <div *ngIf="showCreatePromotionForm" class="create-promotion-form">
   <h2>Criar Nova Promoção</h2>
-
   <label for="description">Descrição da Promoção:</label>
   <input id="description" [(ngModel)]="newPromotion.promotionDescription" placeholder="Descrição da promoção">
 
@@ -37,6 +35,7 @@
 
   <button (click)="createPromotion()">Salvar Nova Promoção</button>
 </div>
+
 
 <!-- Filtro para produtos -->
 <h2>Selecione os Produtos:</h2>

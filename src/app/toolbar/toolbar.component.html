@@ -11,4 +11,8 @@
   <div class="toolbar-item">
     <button class="toolbar-button" routerLink="/promotion">📦</button>
   </div>
+  <div class="user-info">
+    Bem-vindo, {{ userName }}
+    <button class="toolbar-button" (click)="logout()">Logout</button>
+  </div>
 </div>

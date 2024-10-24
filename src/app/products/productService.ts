@@ -41,10 +41,18 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
+  private getHeaders(): HttpHeaders {
+    const token = sessionStorage.getItem('auth-token');
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+  }
+
   // ========= Funções CRUD =========
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl).pipe(
+    return this.http.get<Product[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
       tap((products) => {
         console.log('Produtos recebidos:', products);
         this.convertDates(products);
@@ -55,14 +63,14 @@ export class ProductService {
 
   saveProduct(product: Product): Observable<Product> {
     this.formatDate(product);
-    return this.http.post<Product>(this.apiUrl, product).pipe(
+    return this.http.post<Product>(this.apiUrl, product,{ headers: this.getHeaders() }).pipe(
       tap(() => this.refreshProductList()),
       catchError(this.handleError)
     );
   }
 
   deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/${id}`,{ headers: this.getHeaders() }).pipe(
       tap(() => this.refreshProductList()),
       catchError(this.handleError)
     );
@@ -71,7 +79,7 @@ export class ProductService {
   updateProduct(product: Product, productId: number): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     this.formatDate(product);
-    return this.http.put<Product>(`${this.apiUrl}/${productId}`, product, { headers }).pipe(
+    return this.http.put<Product>(`${this.apiUrl}/${productId}`, product,{ headers: this.getHeaders() }).pipe(
       catchError(this.handleError)
     );
   }

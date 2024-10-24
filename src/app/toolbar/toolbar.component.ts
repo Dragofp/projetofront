@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-toolbar',
@@ -13,7 +13,20 @@ import {RouterLink} from "@angular/router";
 export class ToolbarComponent {
   @Output() toggleSearchEvent = new EventEmitter<void>();
   @Output() openAddDialogEvent = new EventEmitter<void>();
+  userName: string | null = '';
 
+  constructor( private router: Router) {
+  }
+
+  ngOnInit() {
+    this.userName = sessionStorage.getItem('username');
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('username');
+    this.router.navigate(['/']);
+  }
 
   // Emite o evento para alternar a barra de pesquisa
   toggleSearch(): void {
@@ -24,6 +37,7 @@ export class ToolbarComponent {
   openAddDialog(): void {
     this.openAddDialogEvent.emit();
   }
+
 
 
 }

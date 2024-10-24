@@ -3,11 +3,13 @@ import { ValidationComponent } from './validation/validation.component';
 import {NgModule} from "@angular/core";
 import {ProductListComponent} from "./products/products-list/products-list.component";
 import {PromotionPageComponent} from "./promotions/promotion-page/promotion-page.component";
+import {TelaloginComponent} from "./telalogin/telalogin.component";
 
 export const routes: Routes = [
-  { path: '', component: ProductListComponent },          // Rota principal (raiz)
+  { path: '', component: TelaloginComponent },          // Rota principal (raiz)
   { path: 'validation', component: ValidationComponent }, // Rota para o ValidationComponent
-  {path: 'promotion', component: PromotionPageComponent}
+  {path: 'promotion', component: PromotionPageComponent},
+  {path: 'product', component: ProductListComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],  // Configure o RouterModule aqui
