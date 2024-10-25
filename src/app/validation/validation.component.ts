@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService, Product } from '../products/productService';
 import { FormBuilder, FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {RouterLink} from "@angular/router";
+import { RouterLink } from '@angular/router';
 
-// Novo tipo extendido de Product
 interface ProductWithExpiration extends Product {
   daysUntilExpiration: number;  // Adiciona a propriedade daysUntilExpiration
 }
@@ -25,6 +24,7 @@ export class ValidationComponent implements OnInit {
     { key: 'dateExpiration', label: 'Data de Validade', selected: true },
     { key: 'daysUntilExpiration', label: 'Dias Restantes', selected: true }
   ];
+  errorMessage = ''; // Para armazenar a mensagem de erro
 
   constructor(private productService: ProductService, private fb: FormBuilder) {}
 
@@ -48,9 +48,8 @@ export class ValidationComponent implements OnInit {
   calculateDaysUntilExpiration(products: Product[]): ProductWithExpiration[] {
     const currentDate: Date = new Date();
     return products.map(product => {
-      // Verifica se 'dateExpiration' é válido
       if (!product.dateExpiration) {
-        return { ...product, daysUntilExpiration: Infinity }; // Se não houver data, atribui um valor "infinito" ou qualquer outro valor de fallback
+        return { ...product, daysUntilExpiration: Infinity }; // Usando Infinity para itens sem validade
       }
 
       const dateExpiration = new Date(product.dateExpiration);
@@ -61,7 +60,6 @@ export class ValidationComponent implements OnInit {
     });
   }
 
-
   // Ordena os produtos pelo número de dias restantes até expirar
   sortProductsByExpiration(): void {
     this.products.sort((a, b) => a.daysUntilExpiration - b.daysUntilExpiration);
@@ -71,6 +69,7 @@ export class ValidationComponent implements OnInit {
   applyFilters(): void {
     const searchTerm = this.searchControl.value?.toLowerCase() || '';
     this.filteredProducts = this.products.filter(product => {
+      // Filtra os produtos com base no termo de busca
       return product.productName.toLowerCase().includes(searchTerm);
     });
   }
@@ -90,6 +89,7 @@ export class ValidationComponent implements OnInit {
 
   // Tratamento de erros
   handleError(error: any): void {
+    this.errorMessage = 'Erro ao carregar produtos. Tente novamente mais tarde.';
     console.error('Erro ao carregar produtos:', error);
   }
 }

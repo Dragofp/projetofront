@@ -75,7 +75,7 @@ export class EditProductDialogComponent implements OnInit {
         productId: productId,
         promotion: this.productForm.value.promotion
           ? { promotionId: this.productForm.value.promotion }
-          : null, // Envia null para remover a promoção
+          : null,
       };
 
       this.productService.updateProduct(payload, productId).subscribe({

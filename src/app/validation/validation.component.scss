@@ -1,44 +1,44 @@
-/* Contêiner do cabeçalho que inclui o botão e a barra de pesquisa */
+/* Contêiner do Cabeçalho */
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 20px; /* Espaço entre botão e barra de pesquisa */
+  justify-content: space-between;
+  gap: 20px;
   margin-bottom: 20px;
 
   @media (max-width: 768px) {
-    flex-direction: column; /* Em telas menores, o botão e o campo de pesquisa ficam em linha vertical */
+    flex-direction: column;
     gap: 10px;
   }
 }
 
-/* Botão de Voltar ao Index */
+/* Botão de Voltar */
 .back-button {
   background-color: #007bff;
   color: #fff;
   padding: 10px 15px;
-  border-radius: 5px;
-  text-decoration: none;
+  border-radius: 6px;
   font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Aumenta a sombra no hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
 }
 
-/* Barra de pesquisa */
+/* Barra de Pesquisa */
 .search-input {
   padding: 12px;
   font-size: 1rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   flex: 1;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s, box-shadow 0.3s;
 
   &:focus {
     border-color: #007bff;
@@ -50,7 +50,7 @@
   }
 }
 
-/* Campo de Seleção de Campos para Exibição */
+/* Campo de Seleção de Campos */
 .field-selection {
   padding: 15px;
   background-color: #f9f9f9;
@@ -77,8 +77,7 @@
     gap: 5px;
 
     input[type="checkbox"] {
-      margin-right: 5px;
-      transform: scale(1.1); /* Aumenta o tamanho do checkbox */
+      transform: scale(1.1);
     }
 
     label {
@@ -90,39 +89,36 @@
   .toggle-fields-button {
     background-color: #007bff;
     color: #fff;
-    border: none;
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s;
 
     &:hover {
       background-color: #0056b3;
     }
   }
 }
-/* Lista de Produtos com Validade */
+
+/* Lista de Produtos */
 .validation-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 15px;
   padding: 0;
-  list-style-type: none;
+  list-style: none;
 }
 
 .validation-item {
   background-color: #fff;
   padding: 20px;
-  border: 2px solid #ddd; /* Adiciona uma borda visível ao redor dos itens */
+  border: 2px solid #ddd;
   border-radius: 8px;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
-  font-family: 'Arial', sans-serif;
-  font-size: 1rem;
+  transition: box-shadow 0.3s, transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   color: #333;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+  font-family: Arial, sans-serif;
+  text-align: justify;
 
   &:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
@@ -154,8 +150,6 @@
     color: #5cb85c;
   }
 }
-
-
 
 /* Mensagem para Nenhum Produto */
 .no-products {
@@ -190,7 +184,7 @@
   justify-content: center;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
 
   &:hover {
     background-color: #007bff;

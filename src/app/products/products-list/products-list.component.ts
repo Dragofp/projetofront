@@ -29,7 +29,6 @@ export class ProductListComponent implements OnInit {
 
   filters: { searchField: FormControl; searchTerm: FormControl }[] = [];
 
-  // Campos que podem ser exibidos dinamicamente
   displayFields = [
     { key: 'productId', label: 'ID', selected: true },
     { key: 'productName', label: 'Nome', selected: true },
@@ -57,7 +56,6 @@ export class ProductListComponent implements OnInit {
     this.addFilter();
   }
 
-  // Carrega produtos do backend
   loadProducts(): void {
     this.productService.getProducts().subscribe(
       (products) => {
@@ -71,26 +69,22 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  // Adiciona um novo filtro dinâmico
   addFilter(): void {
     const newFilter = { searchField: new FormControl('productName'), searchTerm: new FormControl('') };
     this.filters.push(newFilter);
     this.observeFilterChanges(newFilter);
   }
 
-  // Observa mudanças nos filtros
   observeFilterChanges(filter: { searchField: FormControl; searchTerm: FormControl }): void {
     filter.searchField.valueChanges.subscribe(() => this.applyFilters());
     filter.searchTerm.valueChanges.subscribe(() => this.applyFilters());
   }
 
-  // Remove um filtro específico
   removeFilter(index: number): void {
     this.filters.splice(index, 1);
     this.applyFilters();
   }
 
-  // Aplica os filtros na lista de produtos
   applyFilters(): void {
     this.filteredProducts = this.products.filter((product) =>
       this.filters.every((filter) => {
@@ -101,7 +95,6 @@ export class ProductListComponent implements OnInit {
     this.updatePaginatedProducts();
   }
 
-  // Ordena a lista de produtos
   sortProducts(): void {
     this.filteredProducts.sort((a, b) => {
       const valueA = this.extractValue(a, this.sortCriteria);
@@ -124,7 +117,6 @@ export class ProductListComponent implements OnInit {
     this.updatePaginatedProducts();
   }
 
-  // Alterna a direção da ordenação
   toggleSortDirection(): void {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.sortProducts();
@@ -139,33 +131,28 @@ export class ProductListComponent implements OnInit {
     return value;
   }
 
-  // Atualiza a lista paginada
   updatePaginatedProducts(): void {
     const startIndex = (this.currentPage - 1) * this.productsPerPage;
     this.paginatedProducts = this.filteredProducts.slice(startIndex, startIndex + this.productsPerPage);
   }
 
-  // Altera a página atual
   changePage(page: number): void {
     this.currentPage = page;
     this.updatePaginatedProducts();
   }
 
-  // Alterna a visibilidade de todos os campos
   toggleAllFields(): void {
     const allSelected = this.displayFields.every((field) => field.selected);
     this.displayFields.forEach((field) => (field.selected = !allSelected));
     this.applyFilters(); // Certifique-se de atualizar a exibição após a alteração
   }
 
-// Alterna a visibilidade de um campo específico
   toggleField(key: string): void {
     const field = this.displayFields.find((f) => f.key === key);
     if (field) field.selected = !field.selected;
     this.applyFilters(); // Atualiza a lista após a alteração
   }
 
-// Verifica se um campo está visível
   isFieldVisible(key: string): boolean {
     return this.displayFields.some((field) => field.key === key && field.selected);
   }
@@ -178,7 +165,6 @@ export class ProductListComponent implements OnInit {
   }
 
 
-  // Abre o diálogo de edição de produto
   openEditDialog(product: Product): void {
     const dialogRef = this.dialog.open(EditProductDialogComponent, {
       data: product,
@@ -211,7 +197,6 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  // Abre o diálogo de confirmação para deletar um produto
   confirmDelete(productId: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
