@@ -16,7 +16,7 @@ export interface Promotion {
   providedIn: 'root'
 })
 export class PromotionService {
-  private apiUrl = 'http://localhost:8080/promotions'; // URL da API de promoções
+  private apiUrl = 'https://app-long-surf-313.fly.dev/promotions'; // URL da API de promoções
   private promotionListUpdated = new Subject<void>(); // Sujeito para notificar sobre atualizações na lista
 
   constructor(private http: HttpClient) {}

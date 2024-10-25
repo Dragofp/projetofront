@@ -36,7 +36,7 @@ export interface Product {
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:8080/products'; // URL da API
+  private apiUrl = 'https://app-long-surf-313.fly.dev/products'; // URL da API
   private productListUpdated = new Subject<void>(); // Sujeito para atualizar a lista
 
   constructor(private http: HttpClient) {}

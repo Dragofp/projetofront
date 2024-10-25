@@ -15,7 +15,7 @@ class LoginResponse {
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:8080/auth'; // URL do seu backend
+  private apiUrl = 'https://app-long-surf-313.fly.dev/auth'; // URL do seu backend
 
   constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
