@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { NgIf } from "@angular/common";
-import { LoginService } from "./LoginService";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { LoginService } from './LoginService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-telalogin',
@@ -12,16 +12,15 @@ import {Router} from "@angular/router";
     NgIf
   ],
   templateUrl: './telalogin.component.html',
-  styleUrls: ['./telalogin.component.scss'] // Corrigido para "styleUrls" (plural)
+  styleUrls: ['./telalogin.component.scss']
 })
-export class TelaloginComponent {
+export class TelaloginComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
-  isLoginMode = true;  // Alternar entre login e registro
-  errorMessage: string | null = null;  // Para exibir mensagens de erro
+  isLoginMode = true;
+  errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService,
-  private router: Router) {}
+  constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router) {}
 
   ngOnInit(): void {
     this.buildForms();
@@ -42,19 +41,17 @@ export class TelaloginComponent {
     });
   }
 
-  // Alterna entre o modo de login e registro
   toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
     this.errorMessage = null; // Limpa a mensagem de erro ao trocar
   }
 
-  // Submissão do formulário de login
   onLoginSubmit(): void {
     if (this.loginForm.valid) {
       const { email, senha } = this.loginForm.value;
       this.loginService.login(email, senha).subscribe({
-        next: (response) => {
-          console.log('Login bem-sucedido', response);
+        next: () => {
+          console.log('Login bem-sucedido');
           this.router.navigate(['/product']);
         },
         error: (error) => {
@@ -66,13 +63,12 @@ export class TelaloginComponent {
     }
   }
 
-  // Submissão do formulário de registro
   onRegisterSubmit(): void {
     if (this.registerForm.valid) {
       const { name, email, senha } = this.registerForm.value;
       this.loginService.register(name, email, senha).subscribe({
-        next: (response) => {
-          console.log('Registro bem-sucedido', response);
+        next: () => {
+          console.log('Registro bem-sucedido');
           this.toggleMode(); // Alterna para o login após o registro
         },
         error: (error) => {

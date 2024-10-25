@@ -1,7 +1,8 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { AuthService } from './AuthService';
 
 class LoginResponse {
   email!: string;
@@ -16,14 +17,14 @@ class LoginResponse {
 export class LoginService {
   private apiUrl = 'http://localhost:8080/auth'; // URL do seu backend
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
   // Método de login
   login(email: string, password: string): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(this.apiUrl + "/login", { email, password }).pipe(
+    return this.httpClient.post<LoginResponse>(this.apiUrl + '/login', { email, password }).pipe(
       tap((value) => {
-        sessionStorage.setItem("auth-token", value.token);  // Armazena o token
-        sessionStorage.setItem("username", value.name);    // Armazena o nome do usuário
+        this.authService.setToken(value.token);
+        this.authService.setUsername(value.name);
       }),
       catchError(this.handleError)
     );
@@ -31,10 +32,10 @@ export class LoginService {
 
   // Método de registro
   register(name: string, email: string, password: string): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(this.apiUrl + "/register", { name, email, password }).pipe(
+    return this.httpClient.post<LoginResponse>(this.apiUrl + '/register', { name, email, password }).pipe(
       tap((value) => {
-        sessionStorage.setItem("auth-token", value.token);  // Armazena o token
-        sessionStorage.setItem("username", value.name);    // Armazena o nome do usuário
+        this.authService.setToken(value.token);
+        this.authService.setUsername(value.name);
       }),
       catchError(this.handleError)
     );
