@@ -26,13 +26,13 @@ export class AlterProductComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Product
   ) {
     this.initialQuantity = data.quantity;
-    this.finalQuantity = this.initialQuantity; // Define o valor inicial da quantidade final
+    this.finalQuantity = this.initialQuantity;
   }
 
   ngOnInit(): void {
     this.alterForm = this.fb.group({
       changeQuantity: [0, [Validators.required]],
-      finalQuantity: [{ value: this.initialQuantity, disabled: true }] // Campo apenas para visualização
+      finalQuantity: [{ value: this.initialQuantity, disabled: true }]
     });
 
     this.alterForm.get('changeQuantity')!.valueChanges.subscribe(change => {
@@ -42,7 +42,7 @@ export class AlterProductComponent implements OnInit {
 
   updateFinalQuantity(change: number): void {
     const newQuantity = this.initialQuantity + change;
-    this.finalQuantity = newQuantity < 1 ? 1 : newQuantity; // Garante que não fique abaixo de 1
+    this.finalQuantity = newQuantity < 1 ? 1 : newQuantity;
     this.alterForm.get('finalQuantity')!.setValue(this.finalQuantity);
   }
 

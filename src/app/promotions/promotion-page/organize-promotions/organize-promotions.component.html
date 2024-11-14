@@ -1,56 +1,91 @@
-<h1>Organizar Promoções</h1>
+<div class="promotion-form-container">
+  <h1>Organizar Promoções</h1>
 
-<!-- Seção para selecionar uma promoção -->
-<label for="promotion">Selecione uma Promoção:</label>
-<select id="promotion" [(ngModel)]="selectedPromotion">
-  <option *ngFor="let promotion of promotions" [ngValue]="promotion">
-    {{ promotion.promotionDescription }} <!-- Usando o campo correto -->
-  </option>
-</select>
+  <!-- Seção para selecionar uma promoção existente -->
+  <div class="form-group">
+    <label for="promotion">Selecione uma Promoção:</label>
+    <select id="promotion" [(ngModel)]="selectedPromotion">
+      <option *ngFor="let promotion of promotions" [ngValue]="promotion">
+        {{ promotion.promotionDescription }}
+      </option>
+    </select>
+  </div>
 
-<!-- Botão para alternar exibição do formulário de criar promoção -->
-<button (click)="toggleCreatePromotionForm()">
-  {{ showCreatePromotionForm ? 'Fechar Formulário de Nova Promoção' : 'Criar Nova Promoção' }}
-</button>
-
-<div *ngIf="showCreatePromotionForm" class="create-promotion-form">
-  <h2>Criar Nova Promoção</h2>
-  <label for="description">Descrição da Promoção:</label>
-  <input id="description" [(ngModel)]="newPromotion.promotionDescription" placeholder="Descrição da promoção">
-
-  <label for="discount">Desconto (%):</label>
-  <input id="discount" type="number" [(ngModel)]="newPromotion.discountPercentage" placeholder="Porcentagem de desconto">
-
-  <label for="startDate">Data de Início:</label>
-  <input id="startDate" type="date" [(ngModel)]="newPromotion.startDate">
-
-  <label for="endDate">Data de Término:</label>
-  <input id="endDate" type="date" [(ngModel)]="newPromotion.endDate">
-
-  <label for="status">Status:</label>
-  <select id="status" [(ngModel)]="newPromotion.status">
-    <option value="ACTIVE">Ativa</option>
-    <option value="INACTIVE">Inativa</option>
-  </select>
-
-  <button (click)="createPromotion()">Salvar Nova Promoção</button>
-</div>
-
-
-<!-- Filtro para produtos -->
-<h2>Selecione os Produtos:</h2>
-<input [formControl]="filterControl" placeholder="Filtrar produtos...">
-
-<!-- Lista de produtos filtrados -->
-<div *ngFor="let product of filterProducts()">
-  <input type="checkbox" [checked]="isProductSelected(product)" (change)="toggleProductSelection(product)">
-  {{ product.productName }}
-</div>
-
-<!-- Botões de ação -->
-<div class="action-buttons">
-  <button (click)="applyPromotion()" [disabled]="!selectedPromotion || !selectedProducts.length">
-    Aplicar Promoção
+  <!-- Botão para alternar exibição do formulário de criar promoção -->
+  <button class="toggle-button" (click)="toggleCreatePromotionForm()">
+    {{ showCreatePromotionForm ? 'Fechar Formulário de Nova Promoção' : 'Criar Nova Promoção' }}
   </button>
-  <button (click)="cancel()">Cancelar</button>
+
+  <!-- Formulário para criar uma nova promoção -->
+  <div *ngIf="showCreatePromotionForm" class="create-promotion-form">
+    <h2>Criar Nova Promoção</h2>
+
+    <div class="form-group">
+      <label for="description">Descrição da Promoção:</label>
+      <input
+        id="description"
+        [(ngModel)]="newPromotion.promotionDescription"
+        placeholder="Descrição da promoção"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="discount">Desconto (%):</label>
+      <input
+        id="discount"
+        type="number"
+        [(ngModel)]="newPromotion.discountPercentage"
+        placeholder="Porcentagem de desconto"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Data de Início:</label>
+      <input id="startDate" type="date" [(ngModel)]="newPromotion.startDate" />
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">Data de Término:</label>
+      <input id="endDate" type="date" [(ngModel)]="newPromotion.endDate" />
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <select id="status" [(ngModel)]="newPromotion.status">
+        <option value="ACTIVE">Ativa</option>
+        <option value="INACTIVE">Inativa</option>
+      </select>
+    </div>
+
+    <button class="save-button" (click)="createPromotion()">Salvar Nova Promoção</button>
+  </div>
+
+  <!-- Filtro de produtos -->
+  <h2>Selecione os Produtos:</h2>
+  <div class="form-group">
+    <input [formControl]="filterControl" placeholder="Filtrar produtos..." />
+  </div>
+
+  <!-- Lista de produtos com checkbox -->
+  <div class="product-selection-list">
+    <div class="product-item" *ngFor="let product of filterProducts()">
+      <div class="product-item-content">
+        <input
+          type="checkbox"
+          [checked]="isProductSelected(product)"
+          (change)="toggleProductSelection(product)"
+        />
+        <span>{{ product.productName }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Botões de ação -->
+  <div class="action-buttons">
+    <button (click)="applyPromotion()" [disabled]="!selectedPromotion || !selectedProducts.length">
+      Aplicar Promoção
+    </button>
+    <button class="close-button" (click)="cancel()">Cancelar</button>
+  </div>
 </div>

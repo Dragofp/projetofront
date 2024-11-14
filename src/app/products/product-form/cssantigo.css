@@ -1,0 +1,287 @@
+/* ===== Barra de Ferramentas ===== */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Título ===== */
+.titleproduct {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* ===== Botão de Visibilidade dos Campos ===== */
+.toggle-visibility-button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+/* ===== Campo de Seleção de Campos ===== */
+.field-selection,
+.sort-container {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
+  label {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .toggle-fields-button,
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .field-group,
+  .field-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  input[type="checkbox"] {
+    transform: scale(1.1);
+  }
+
+  label {
+    font-size: 0.95rem;
+    color: #555;
+  }
+}
+
+/* ===== Pesquisa e Filtros ===== */
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .search-select,
+  .search-input {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    min-width: 150px;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+    }
+  }
+
+  .add-filter-button,
+  .remove-filter-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+
+/* ===== Lista de Produtos ===== */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 15px;
+  padding: 0;
+  list-style: none;
+}
+
+.product-item {
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: box-shadow 0.3s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  text-align: justify;
+  min-height: 320px; /* Altura mínima para evitar saltos */
+  overflow: hidden; /* Evita overflow ao aumentar fonte */
+
+  &:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  div {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    .edit-button,
+    .delete-button {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .delete-button:hover {
+      color: #d9534f;
+    }
+
+    .edit-button:hover {
+      color: #0275d8;
+    }
+  }
+}
+
+/* ===== Paginação ===== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+
+  button {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &.active,
+    &:hover {
+      background-color: #007bff;
+      color: white;
+    }
+  }
+}
+
+/* ===== Ajuste de Acessibilidade ===== */
+.accessibility-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.accessibility-buttons button {
+  padding: 8px 12px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+/* ===== Classes para Tamanho de Fonte ===== */
+.font-small {
+  font-size: 12px;
+}
+
+.font-medium {
+  font-size: 16px;
+}
+
+.font-large {
+  font-size: 20px;
+}
+
+/* ===== Mensagem Sem Produtos ===== */
+.no-products {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}

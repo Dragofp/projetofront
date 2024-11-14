@@ -1,0 +1,37 @@
+<div class="report-container">
+  <a routerLink="/product" class="back-button">
+    ⬅ Voltar para o Index
+  </a>
+  <h2>Relatório de Estoque Crítico</h2>
+  <form [formGroup]="criticalStockForm" (ngSubmit)="generateReport()">
+    <label for="threshold">Estoque mínimo:</label>
+    <input id="threshold" formControlName="threshold" type="number" />
+    <button type="submit">Gerar Relatório</button>
+  </form>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="criticalStockProducts.length > 0">
+    <h3>Produtos com Estoque Crítico</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Quantidade</th>
+        <th>Tipo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let product of criticalStockProducts">
+        <td>{{ product.productId }}</td>
+        <td>{{ product.productName }}</td>
+        <td>{{ product.quantity }}</td>
+        <td>{{ product.productType }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
