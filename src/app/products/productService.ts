@@ -63,6 +63,18 @@ export class ProductService {
     );
   }
 
+  // Busca produtos com estoque abaixo de um limite especificado
+  getCriticalStockProducts(threshold: number): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/critical-stock?threshold=${threshold}`, { headers: this.getHeaders() }).pipe(
+      tap((products) => {
+        console.log('Produtos com estoque crítico recebidos:', products);
+        this.convertDates(products);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+
   // Cria um novo produto
   saveProduct(product: Product): Observable<Product> {
     this.formatDate(product); // Formata datas antes de enviar

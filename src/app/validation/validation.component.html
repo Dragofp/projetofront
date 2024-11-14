@@ -1,35 +1,20 @@
 <div class="header-container">
-  <!-- Botão de Voltar ao Index -->
-  <a routerLink="/" class="back-button">
-    ⬅ Voltar para o Index
-  </a>
-
-  <!-- Barra de pesquisa -->
-  <input
-    type="text"
-    [formControl]="searchControl"
-    placeholder="Pesquisar produto..."
-    class="search-input"
-  />
+  <a routerLink="/product" class="back-button">⬅ Voltar para o Visualização De Produtos</a>
+  <input type="text" [formControl]="searchControl" placeholder="Pesquisar produto..." class="search-input" />
 </div>
 
-<!-- Caixa de seleção para exibição dinâmica dos campos -->
 <div class="field-selection">
   <h3>Exibir Campos</h3>
   <div *ngFor="let field of displayFields">
-    <input
-      type="checkbox"
-      [checked]="field.selected"
-      (change)="toggleField(field.key)"
-    />
+    <input type="checkbox" [checked]="field.selected" (change)="toggleField(field.key)" />
     <label>{{ field.label }}</label>
   </div>
 </div>
 
-<!-- Lista de produtos -->
-<div *ngIf="filteredProducts.length > 0; else noProducts">
+
+<div *ngIf="paginatedProducts.length > 0; else noProducts">
   <ul class="product-list">
-    <li *ngFor="let product of filteredProducts" class="product-item">
+    <li *ngFor="let product of paginatedProducts" class="product-item">
       <div *ngIf="isFieldVisible('productName')">
         <strong>Nome:</strong> {{ product.productName }}
       </div>
@@ -37,13 +22,22 @@
         <strong>Validade:</strong> {{ product.dateExpiration | date:'dd/MM/yyyy' }}
       </div>
       <div *ngIf="isFieldVisible('daysUntilExpiration')">
-        <strong>Dias Restantes:</strong> {{ product.daysUntilExpiration }} dias
+        <strong>Dias Restantes:</strong>
+        <span [ngClass]="{'days-warning': product.daysUntilExpiration <= 5, 'safe': product.daysUntilExpiration > 5}">
+          {{ product.daysUntilExpiration }} dias
+        </span>
       </div>
     </li>
   </ul>
+  <div class="pagination">
+    <button *ngFor="let page of [].constructor(totalPages); let i = index"
+            (click)="changePage(i + 1)"
+            [class.active]="currentPage === i + 1">
+      {{ i + 1 }}
+    </button>
+  </div>
 </div>
 
-<!-- Mensagem quando não há produtos -->
 <ng-template #noProducts>
-  <p>Nenhum produto encontrado.</p>
+  <p class="no-products">Nenhum produto encontrado.</p>
 </ng-template>

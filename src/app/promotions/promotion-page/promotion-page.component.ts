@@ -69,21 +69,24 @@ export class PromotionPageComponent implements OnInit {
 
   // Abrir o diálogo de organizar promoções
   openOrganizePromotionsDialog(): void {
+    // Abre o diálogo com o componente OrganizePromotionsDialogComponent
     const dialogRef = this.dialog.open(OrganizePromotionsDialogComponent, {
-      width: '80%',  // Aumenta a largura
-      height: '80%', // Define a altura máxima
-      panelClass: 'custom-dialog-container', // Aplica uma classe CSS personalizada
+      width: '80%',           // Define a largura do diálogo
+      height: '80%',          // Define a altura do diálogo
+      panelClass: 'custom-dialog-container', // Classe CSS personalizada para estilização
+
+      // Passa os dados necessários para o componente do diálogo
       data: {
         products: this.products,
         promotions: this.promotions
       }
     });
 
+    // Executa quando o diálogo é fechado
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadProducts();  // Recarrega a lista de produtos
+        this.loadProducts(); // Recarrega a lista de produtos caso o diálogo retorne um valor
       }
     });
   }
-
 }

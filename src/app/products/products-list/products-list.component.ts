@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService, Product } from '../productService';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
@@ -8,6 +8,7 @@ import { EditProductDialogComponent } from './edit-product-dialog/edit-product-d
 import { ToolbarComponent } from '../../toolbar/toolbar.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { AlterProductComponent } from './alterproduct/alterproduct.component';
+
 
 @Component({
   selector: 'app-product-list',
@@ -31,7 +32,7 @@ export class ProductListComponent implements OnInit {
 
   displayFields = [
     { key: 'productId', label: 'ID', selected: true },
-    { key: 'productName', label: 'Nome', selected: true },
+    { key: 'productName', label: 'Produto', selected: true },
     { key: 'productType', label: 'Tipo', selected: true },
     { key: 'quantity', label: 'Quantidade', selected: true },
     { key: 'numberLote', label: 'Número do Lote', selected: true },
@@ -47,6 +48,7 @@ export class ProductListComponent implements OnInit {
     { key: 'status', label: 'Status', selected: true },
     { key: 'promotion', label: 'Promoção', selected: true },
   ];
+  protected showFieldSelection!: boolean;
 
 
   constructor(private productService: ProductService, public dialog: MatDialog) {}
@@ -123,7 +125,7 @@ export class ProductListComponent implements OnInit {
   }
 
   extractValue(obj: Product, key: string): any {
-    const keys = key.split('.'); // Permite acessar sub-propriedades (ex.: 'promotion.promotionDescription')
+    const keys = key.split('.');
     let value: any = obj;
     for (const k of keys) {
       value = value ? value[k] : undefined;
@@ -144,31 +146,40 @@ export class ProductListComponent implements OnInit {
   toggleAllFields(): void {
     const allSelected = this.displayFields.every((field) => field.selected);
     this.displayFields.forEach((field) => (field.selected = !allSelected));
-    this.applyFilters(); // Certifique-se de atualizar a exibição após a alteração
+    this.applyFilters();
   }
 
   toggleField(key: string): void {
     const field = this.displayFields.find((f) => f.key === key);
     if (field) field.selected = !field.selected;
-    this.applyFilters(); // Atualiza a lista após a alteração
+    this.applyFilters();
   }
 
   isFieldVisible(key: string): boolean {
     return this.displayFields.some((field) => field.key === key && field.selected);
   }
 
-  openAlterDialog(product: Product):void{
-    const dialogref = this.dialog.open(AlterProductComponent,{data:product,width:'600px'});
-    dialogref.afterClosed().subscribe((result) =>{
-      if (result) this.loadProducts();
-    })
-  }
+  openAlterDialog(product: Product): void {
+    const dialogRef = this.dialog.open(AlterProductComponent, {
+      data: product,
+      width: '500px',
+      maxWidth: '100%',
+      panelClass: 'custom-dialog-container'
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.loadProducts();
+    });
+  }
 
   openEditDialog(product: Product): void {
     const dialogRef = this.dialog.open(EditProductDialogComponent, {
       data: product,
-      width: '600px',
+      width: '100%',
+      maxWidth: '600px',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'custom-dialog-container',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -183,18 +194,30 @@ export class ProductListComponent implements OnInit {
   }
   openAddDialog(): void {
     const dialogRef = this.dialog.open(ProductFormComponent, {
-      width: '95%',
+      width: '100%',
       maxWidth: '600px',
       maxHeight: '90vh',
       autoFocus: false,
-      panelClass: 'custom-dialog-container' // Isso garante que os estilos personalizados sejam aplicados.
+      panelClass: 'custom-dialog-container',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loadProducts();
       }
     });
+  }
+  fontSize: number = 16;
+
+  adjustFontSize(action: string): void {
+    const minFontSize = 12;
+    const maxFontSize = 24;
+
+    if (action === 'increase' && this.fontSize < maxFontSize) {
+      this.fontSize += 2;
+    } else if (action === 'decrease' && this.fontSize > minFontSize) {
+      this.fontSize -= 2;
+    }
   }
 
   confirmDelete(productId: number): void {
@@ -205,4 +228,9 @@ export class ProductListComponent implements OnInit {
       }
     });
   }
+
+  toggleFieldSelectionVisibility(): void {
+    this.showFieldSelection = !this.showFieldSelection;
+  }
+
 }

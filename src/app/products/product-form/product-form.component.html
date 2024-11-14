@@ -1,7 +1,6 @@
 <div class="product-form-container">
   <h2>Cadastro de Produto</h2>
   <button class="close-button" (click)="onCancel()">X</button>
-
   <form [formGroup]="productForm" class="product-form" (ngSubmit)="onSubmit()">
     <!-- Nome -->
     <div class="form-group">
@@ -11,7 +10,6 @@
         {{ getErrorMessage('productName') }}
       </div>
     </div>
-
     <!-- Quantidade -->
     <div class="form-group">
       <label for="quantity">Quantidade:</label>
@@ -20,7 +18,6 @@
         {{ getErrorMessage('quantity') }}
       </div>
     </div>
-
     <!-- Número do Lote -->
     <div class="form-group">
       <label for="numberLote">Número do Lote:</label>
@@ -29,7 +26,6 @@
         {{ getErrorMessage('numberLote') }}
       </div>
     </div>
-
     <!-- Tipo -->
     <div class="form-group">
       <label for="productType">Tipo:</label>
@@ -38,7 +34,6 @@
         {{ getErrorMessage('productType') }}
       </div>
     </div>
-
     <!-- Data de Validade -->
     <div class="form-group">
       <label for="dateExpiration">Data de Validade:</label>
@@ -47,7 +42,6 @@
         {{ getErrorMessage('dateExpiration') }}
       </div>
     </div>
-
     <!-- Preço por Lote -->
     <div class="form-group">
       <label for="priceForLote">Preço por Lote:</label>
@@ -56,7 +50,6 @@
         {{ getErrorMessage('priceForLote') }}
       </div>
     </div>
-
     <!-- Porcentagem de Ganho -->
     <div class="form-group">
       <label for="gainPercentage">Porcentagem de Ganho:</label>
@@ -65,7 +58,6 @@
         {{ getErrorMessage('gainPercentage') }}
       </div>
     </div>
-
     <!-- Descrição -->
     <div class="form-group">
       <label for="description">Descrição:</label>
@@ -74,28 +66,23 @@
         {{ getErrorMessage('description') }}
       </div>
     </div>
-
     <!-- Campos de Visualização (Somente Leitura) -->
     <div class="readonly-group">
       <label>Preço Unitário:</label>
       <input [value]="priceForUnity | number:'1.2-2'" readonly />
     </div>
-
     <div class="readonly-group">
       <label>Preço Total com Ganho:</label>
       <input [value]="priceForLotePercent | number:'1.2-2'" readonly />
     </div>
-
     <div class="readonly-group">
       <label>Preço Unitário com Ganho:</label>
       <input [value]="priceForUnityPercent | number:'1.2-2'" readonly />
     </div>
-
     <!-- Mensagem de Erro Global -->
     <div class="error-message" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
-
     <!-- Botões -->
     <div class="form-buttons">
       <button type="submit" [disabled]="productForm.invalid">Cadastrar Produto</button>

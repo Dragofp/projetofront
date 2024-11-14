@@ -1,151 +1,118 @@
-.alterproduct-container {
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  width: 400px; /* Define uma largura fixa */
-  height: 400px; /* Define uma altura fixa */
-  max-width: 100%; /* Garante que o modal não ultrapasse a largura da tela em dispositivos pequenos */
-  margin: 0 auto;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Garante que os elementos estejam distribuídos uniformemente */
-  overflow: hidden;
+.product-alter-container {
+  max-width: 600px;
+  margin: 25px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
     text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
   }
 
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #888;
-    cursor: pointer;
-    transition: color 0.3s;
-
-    &:hover {
-      color: #333;
-    }
-  }
-}
-
-.alter-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  overflow-y: auto; /* Adiciona rolagem vertical caso o conteúdo ultrapasse a altura */
-
-  .form-group {
+  .alter-form {
     display: flex;
     flex-direction: column;
+    gap: 15px;
 
-    label {
-      font-weight: 600;
-      margin-bottom: 5px;
-      color: #444;
-    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
 
-    input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      background-color: #f9f9f9;
+      label {
+        font-weight: bold;
+      }
 
-      &:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-        background: #fff;
+      input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+
+        &:focus {
+          outline: none;
+          border-color: #007bff;
+          box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+        }
       }
     }
 
-    input[readonly] {
-      background: #e9ecef;
-      color: #6c757d;
+    .adjust-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+
+      .positive-buttons,
+      .negative-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .negative-buttons {
+        margin-top: 10px;
+
+        button {
+          background-color: #d9534f;
+          color: white;
+
+          &:hover {
+            background-color: #c9302c;
+          }
+        }
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
     }
-  }
 
-  .adjust-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 5px;
+    .form-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
 
-    button {
-      flex: 1;
-      padding: 8px;
-      font-size: 0.9rem;
-      border-radius: 6px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-
-      &:hover {
-        background-color: #0056b3;
-        transform: translateY(-1px);
-      }
-
-      &:active {
-        background-color: #004494;
-        transform: translateY(0);
-      }
-
-      &:last-child {
+      .cancel-button {
         background-color: #d9534f;
+      }
 
-        &:hover {
-          background-color: #c9302c;
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:disabled {
+          background-color: #6c757d;
+          cursor: not-allowed;
         }
-      }
-    }
-  }
 
-  .form-buttons {
-    display: flex;
-    justify-content: space-between;
-
-    button {
-      padding: 10px 16px;
-      border-radius: 6px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #0056b3;
-      }
-
-      &.cancel-button {
-        background-color: #f5f5f5;
-        color: #333;
-
-        &:hover {
-          background-color: #e9ecef;
+        &:hover:not(:disabled) {
+          background-color: #0056b3;
         }
       }
     }
   }
 }
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .alterproduct-container {
-    width: 90%; /* Ajusta a largura em telas menores */
-    height: auto; /* Permite que a altura se ajuste automaticamente */
-    max-height: 80vh; /* Garante que o modal não ultrapasse 80% da altura da tela */
-  }
-}
-
